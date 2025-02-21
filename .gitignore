@@ -1,3 +1,4 @@
+.env
 .godot
 .editorconfig
 export_presets.cfg

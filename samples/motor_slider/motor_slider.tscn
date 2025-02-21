@@ -1,0 +1,71 @@
+[gd_scene load_steps=2 format=3 uid="uid://cfvhrbbxy7sul"]
+
+[ext_resource type="Script" path="res://samples/motor_slider/motor_slider.gd" id="1_mai80"]
+
+[node name="PhaseEnableMotor" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mai80")
+
+[node name="container" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="menu" type="HBoxContainer" parent="container"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="container/menu"]
+layout_mode = 2
+text = "Phase:"
+
+[node name="phase-selector" type="OptionButton" parent="container/menu"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="container/menu"]
+layout_mode = 2
+text = "Enable"
+
+[node name="enable-selector" type="OptionButton" parent="container/menu"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="spacer" type="Control" parent="container/menu"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="play-btn" type="Button" parent="container/menu"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+text = " ▶"
+
+[node name="stop-btn" type="Button" parent="container/menu"]
+unique_name_in_owner = true
+layout_mode = 2
+text = " ⏹ "
+
+[node name="slider" type="HBoxContainer" parent="container"]
+layout_mode = 2
+
+[node name="value-label" type="Label" parent="container/slider"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="value-slider" type="HSlider" parent="container/slider"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = -1.0
+max_value = 1.0
+step = 0.01
+ticks_on_borders = true
+
+[node name="spacer" type="Control" parent="."]
+layout_mode = 2
+size_flags_vertical = 3

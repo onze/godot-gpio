@@ -9,10 +9,18 @@ var port :String
 var share_id :int = ggpio.DEFAULT_SHARE_ID
 
 func _init(
-	host :String = ggpio.DEFAULT_LG_ADDR,
-	port :String = ggpio.DEFAULT_LG_PORT,
+	host :String = '',
+	port :String = '',
 ) -> void:
+	if host.is_empty():
+		host = OS.get_environment('LG_ADDR')
+	if host.is_empty():
+		host = ggpio.DEFAULT_LG_ADDR
 	self.host = host
+	if port.is_empty():
+		port = OS.get_environment('LG_PORT')
+	if port.is_empty():
+		port = ggpio.DEFAULT_LG_PORT
 	self.port = port
 
 func list_chips() -> PackedStringArray:
@@ -35,7 +43,7 @@ func list_chips() -> PackedStringArray:
 		chip_ids.append(chip_id)
 	return chip_ids
 
-func open_chip(chip_id :String) -> ggpio.Chip:
+func open_chip(chip_id :String = '0') -> ggpio.Chip:
 	var chip := ggpio.Chip.new(self, chip_id)
 	chip.open()
 	return chip

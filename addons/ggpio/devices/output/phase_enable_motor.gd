@@ -1,35 +1,58 @@
 extends RefCounted
+'''
+Represents a generic motor connected to a Phase/Enable motor driver circuit;
+- phase controls whether the motor turns forwards (0) or backwards (1)
+- enable controls the speed with PWM
+'''
+const PhaseEnableMotor = preload('phase_enable_motor.gd')
+const DigitalOutputDevice = preload('digital_output_device.gd')
+
+static func Make(chip :ggpio.Chip, phase :int, enable :int) -> PhaseEnableMotor:
+	return PhaseEnableMotor.new(
+		DigitalOutputDevice.Make(chip, phase),
+		DigitalOutputDevice.Make(chip, enable),
+	)
 
 var is_active :bool:
 	get: return is_zero_approx(value)
 var value :float = 0:
 	get: return (
-		_enable.value
-		if _phase.value == 0
-		else -_enable.value
+		enable.value
+		if phase.value == 0. # forward
+		else -enable.value
 	)
 	set(v):
-		value = clampf(v, -1, 1)
-		if value > 0:
-			forward(value)
-		elif value < 0:
-			backward(value)
+		v = clampf(v, -1., 1.)
+		if v > 0.:
+			forward(v)
+		elif v < 0.:
+			backward(-v)
 		else:
 			stop()
 
-var _phase :ggpio.GPIO
-var _enable :ggpio.GPIO
+var phase :ggpio.devices.output.DigitalOutputDevice
+var enable :ggpio.devices.output.DigitalOutputDevice
 
 func _init(
-	phase :ggpio.GPIO,
-	enable :ggpio.GPIO,
+	phase :ggpio.devices.output.DigitalOutputDevice,
+	enable :ggpio.devices.output.DigitalOutputDevice,
 )->void:
-	_phase = phase
-	_enable = enable
+	self.phase = phase
+	self.enable = enable
 
 func forward(speed :float = 1.) -> void:
-	value = speed
+	speed = clampf(speed, 0., 1.)
+	phase.off()
+	enable.value = speed
+
 func backward(speed :float = 1.) -> void:
-	value = speed
+	speed = clampf(speed, 0., 1.)
+	phase.on()
+	enable.value = speed
+
 func stop() -> void:
-	value = 0
+	enable.off()
+
+func close() -> void:
+	phase.close()
+	enable.close()

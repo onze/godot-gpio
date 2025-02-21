@@ -15,31 +15,31 @@ static func GIC(h :String, share_id :int = ggpio.NO_SHARE) -> LGCommand:
 	return LGCommand.new().share(share_id).append_array(['gic', h])
 
 static func GSI(h :String, g :int, share_id :int = ggpio.NO_SHARE) -> LGCommand:
-	return LGCommand.new().share(share_id).append_array(['GSI', h, String.num_int64(g)])
+	return LGCommand.new().share(share_id).append_array(['gsi', h, String.num_int64(g)])
 
 static func GSIX(h :String, lf :ggpio.LineFlag, g :int, share_id :int = ggpio.NO_SHARE) -> LGCommand:
-	return LGCommand.new().share(share_id).append_array(['GSIX', h, String.num(lf), String.num_int64(g)])
+	return LGCommand.new().share(share_id).append_array(['gsix', h, String.num(lf), String.num_int64(g)])
 
 static func GSO(h :String, g :int, share_id :int = ggpio.NO_SHARE) -> LGCommand:
-	return LGCommand.new().share(share_id).append_array(['GSO', h, String.num_int64(g)])
+	return LGCommand.new().share(share_id).append_array(['gso', h, String.num_int64(g)])
 
 static func GSOX(h :String, lf :ggpio.LineFlag, g :int, v :int, share_id :int = ggpio.NO_SHARE) -> LGCommand:
-	return LGCommand.new().share(share_id).append_array(['GSOX', h, String.num(lf), String.num_int64(g), String.num_int64(v)])
+	return LGCommand.new().share(share_id).append_array(['gsox', h, String.num(lf), String.num_int64(g), String.num_int64(v)])
 
 static func GSF(h :String, g :int, share_id :int = ggpio.NO_SHARE) -> LGCommand:
-	return LGCommand.new().share(share_id).append_array(['GSF', h, String.num_int64(g)])
+	return LGCommand.new().share(share_id).append_array(['gsf', h, String.num_int64(g)])
 
 static func GIL(h :String, g :int, share_id :int = ggpio.NO_SHARE) -> LGCommand:
-	return LGCommand.new().share(share_id).append_array(['GIL', h, String.num_int64(g)])
+	return LGCommand.new().share(share_id).append_array(['gil', h, String.num_int64(g)])
 
 static func GMODE(h :String, g :int, share_id :int = ggpio.NO_SHARE) -> LGCommand:
-	return LGCommand.new().share(share_id).append_array(['GMODE', h, String.num_int64(g)])
+	return LGCommand.new().share(share_id).append_array(['gmode', h, String.num_int64(g)])
 
 static func GR(h :String, g :int, share_id :int = ggpio.NO_SHARE) -> LGCommand:
-	return LGCommand.new().share(share_id).append_array(['GR', h, String.num_int64(g)])
+	return LGCommand.new().share(share_id).append_array(['gr', h, String.num_int64(g)])
 
 static func GW(h :String, g :int, v: int, share_id :int = ggpio.NO_SHARE) -> LGCommand:
-	return LGCommand.new().share(share_id).append_array(['GW', h, String.num_int64(g), String.num_int64(v)])
+	return LGCommand.new().share(share_id).append_array(['gw', h, String.num_int64(g), String.num_int64(v)])
 
 
 class LGCommand:
