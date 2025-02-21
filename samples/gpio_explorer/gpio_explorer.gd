@@ -24,6 +24,7 @@ func _ready() -> void:
 		LG_ADDR=ggpio.DEFAULT_LG_ADDR,
 		LG_PORT=ggpio.DEFAULT_LG_PORT,
 	}
+	ggpio.Utils.ParseDotEnv()
 	_parse_command_line(env)
 	add_child(_sync_timer)
 	_sync_timer.timeout.connect(_sync_gpios)
