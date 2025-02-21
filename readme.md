@@ -14,6 +14,18 @@ depending on you situation) [install](#requirements) `rgs`
 - on Raspberri Pi: `sudo apt-get install rgpio-tools`
 - others: download/compile `rgs` using [lgpio's install info](https://abyz.me.uk/lg/download.html)
 
+# Introduction
+Here's a quick rundown of the main classes:
+- `lgpio`: `class_name`'d to make it globally available, it can be considered a
+namespace for the project, so that no other gd script needs to be imported in most cases.
+- `lgpio.Chip`: refers to a gpiochip under [the kernel's GPIO driver interface](https://docs.kernel.org/driver-api/gpio/driver.html).
+It basically means a board (eg 1 Pi).
+- `lgpio.GPIO`: this is a single pin on a board. GPIOs on a PI are numbererd
+[as such](https://pinout.xyz/):
+<p align="center">
+  <img src="misc/rpi_pinout.png" alt="RPi pinout"/>
+</p>
+
 # Usage
 Check out scenes in the `samples` directory. Each scene can be played independently (`F6`).
 
