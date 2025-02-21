@@ -13,12 +13,10 @@ var _env :Dictionary = {
 	LG_PORT=ggpio.DEFAULT_LG_PORT,
 }
 
-func _init(gpiochip_id :int) -> void:
+func _init(gpiochip_id :int, env := {}) -> void:
 	id = gpiochip_id
-
-func set_remote(addr :String, port :String = ggpio.DEFAULT_LG_PORT) -> void:
-	_env['LG_ADDR'] = addr
-	_env['LG_PORT'] = port
+	_env.merge(env, true)
+	GO()
 
 func run(cmd :Array[String], shared:=true) -> Array:
 	'''

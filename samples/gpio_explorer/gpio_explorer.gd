@@ -43,8 +43,7 @@ func _ready() -> void:
 
 	ggpio.Init(true)
 
-	_chip = ggpio.Chip.new(0)
-	_chip.set_remote('goshrimp.local')
+	_chip = ggpio.Chip.new(0, {LG_ADDR='goshrimp.local'})
 	refresh_gpio_btn.pressed.connect(_start_populating_gpiochips)
 	gpio_picker.item_selected.connect(_on_gpio_picker_item_selected)
 	sync_freq_btn.item_selected.connect(_update_sync_freq)
@@ -82,8 +81,7 @@ func _continue_populating_gpiochips() -> void:
 func _on_gpio_picker_item_selected(index :int)-> void:
 	# create chip
 	var chip_id :String = gpio_picker.get_item_metadata(gpio_picker.get_item_id(index))
-	_chip = ggpio.Chip.new(int(chip_id))
-	_chip.set_remote(env['LG_ADDR'], env['LG_PORT'])
+	_chip = ggpio.Chip.new(int(chip_id), env)
 	# get chip info
 	_chip.GO()
 	_chip_info = _chip.GIC()
