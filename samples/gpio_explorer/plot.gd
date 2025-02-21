@@ -1,5 +1,5 @@
 extends Control
-
+const DEBUG := false
 
 @export var x_min :float = 0.
 @export var x_max :float = 1.
@@ -10,7 +10,7 @@ extends Control
 @export var curve_color_low := Color.BLACK
 @export var curve_color_high := Color.RED
 @export var width :float = -.1
-@export var margin := Vector2(.2, 5)
+@export var margin := Vector2(1, 2)
 
 var _points := PackedVector2Array()
 var _curve_colors := PackedColorArray()
@@ -22,7 +22,7 @@ func add_point(p :Vector2)->void:
 	_points.append(p)
 	_curve_colors.append(curve_color_low.lerp(
 		curve_color_high,
-		1.-(p.y-y_min)/(y_max-y_min)
+		(p.y-y_min)/(y_max-y_min)
 	))
 	queue_redraw()
 
@@ -43,8 +43,8 @@ func _draw()->void:
 	var rect := Rect2(Vector2.ZERO+margin, size-2.*margin)
 	for i :int in mapped_points.size():
 		var p := mapped_points[i]
-		p.x = remap(p.x, x_min, x_max, rect.position.x, rect.end.x)
-		p.y = remap(p.y, y_min, y_max, rect.position.y, rect.end.y)
+		p.x = remap(clamp(p.x, x_min, x_max), x_min, x_max, rect.position.x, rect.end.x)
+		p.y = remap(clamp(p.y, y_min, y_max), y_min, y_max, rect.end.y, rect.position.y)
 		mapped_points[i] = p
 
 	## draw
@@ -54,11 +54,12 @@ func _draw()->void:
 		background_color,
 		true,
 	)
-	#draw_rect(
-		#Rect2(Vector2.ZERO, size),
-		#Color.BLACK,
-		#false,
-	#)
+	if DEBUG:
+		draw_rect(
+			Rect2(Vector2.ZERO, size),
+			Color.BLACK,
+			false,
+		)
 	# X axis
 	draw_line(
 		Vector2(rect.position.x+5, rect.get_center().y),

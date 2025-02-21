@@ -62,7 +62,7 @@ func _ready() -> void:
 		#gpio_info.line_flags = 0
 
 	# plot setup
-	voltage_plot.y_min = -1.
+	voltage_plot.y_min = 0.
 	voltage_plot.y_max = 1.
 	var dt := Time.get_ticks_msec()
 	voltage_plot.x_min = dt-VOLTAGE_PLOT_WINDOW_S
