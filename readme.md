@@ -3,7 +3,7 @@
 </p>
 
 # Godot-GPIO
-A [Godot](https://godotengine.org/)/GDScript addon to access GPIO on linux hosts (Raspberry Pi, Arduino, etc).
+A [Godot](https://godotengine.org/)/GDScript addon to access GPIO on linux hosts (eg Raspberry Pi).
 
 [!["Buy Me A Coffee"](https://buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/valbisson)
 
@@ -43,7 +43,22 @@ some devices may appears as GPIO while not being mentioned in the diagram above.
 - `ggpio.lg` this is where the low level `lg`/`rpio` interface is implemented. The flow is to create an `LGCommand` and `run` it on an `SBC`.
 
 # Usage
-Check out scenes in the [samples](./samples) directory. Couple points:
+In a nutshell:
+```gdscript
+var sbc_hostname := 'rpi.local'
+var sbc := ggpio.SBC.new(sbc_hostname)
+var chip := sbc.open_chip('0')
+gpio27 = chip.open_gpio(
+	27,
+	ggpio.Mode.OUTPUT,
+	ggpio.LineFlag.PULL_DOWN,
+	ggpio.Level.LOW
+)
+gpio27.write(ggpio.Level.HIGH)
+assert(gpio27.read() == ggpio.Level.HIGH)
+```
+
+For more, check out scenes in the [samples](./samples) directory. Couple points:
 
 - Each scene can be played independently (`F6`)
 - the main scene is *GPIO explorer*, kind of a live version of the pinout above,
@@ -236,3 +251,16 @@ If the lib picks up, we'll plug a strategy pattern in, and add a native rpgio im
 Until then, this is a quick[1] and dirty way to get Godot to play with the Pi.
 
 [1] quick to implement, not quick to run.
+
+
+## Changelog
+
+### 0.3
+- moved all `lg` commands into the `ggpio.lg` namespace
+- added `SBC` class, refactored `Chip` & `GPIO` into an object oriented API
+
+### 0.2
+- ggpio explorer and fixes
+
+### 0.1
+- first working version
