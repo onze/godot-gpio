@@ -1,3 +1,4 @@
+
 <p align="center">
   <img src="ggpio.png" alt="logo"/>
 </p>
@@ -32,12 +33,12 @@ namespace for the project, so that no other gd script needs to be imported in mo
 - `ggpio.SBC`: (Single Board Computer). That's the host we'll be interacting with.
 - `ggpio.Chip`: refers to a gpiochip under [the kernel's GPIO driver interface](https://docs.kernel.org/driver-api/gpio/driver.html).
 Most of the time we're workin with gpio `0`.
-- `ggpio.GPIO`: this is a single pin on a board. 
+- `ggpio.GPIO`: this is a single pin on a board.
 <details><summary>Here's how GPIOs on a Pi are numbered (<a href="https://pinout.xyz/">source</a>):</summary>
 <p align="center">
   <img src="misc/rpi_pinout.png" alt="RPi pinout"/>
 </p>
-<b>Note</b> that some pins in the diagram above are not GPIO, and as such, won't be visible in the lib. 
+<b>Note</b> that some pins in the diagram above are not GPIO, and as such, won't be visible in the lib.
 Reversely, depending on the SBC, some devices may appears as GPIO while not being mentioned in the diagram above.
 </details>
 
@@ -133,7 +134,7 @@ flowchart RL
 
 # WIP Status
 Not all of `rgs` API is implemented (but still available as raw commands). This is a work in progress
-where contributions are welcome. 
+where contributions are welcome.
 
 <details>
 <summary>
