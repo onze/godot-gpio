@@ -85,7 +85,7 @@ func _refresh_from_gpio_info() -> void:
 	var name_tooltip :Array[String] = []
 	if not gpio_info.purpose.is_empty():
 		name_label.text += ' (%s)'%gpio_info.purpose
-	name_tooltip.append('%s->%s'%[gpio_info.line_flags, ggpio.GetModeString(gpio_info.line_flags)])
+	name_tooltip.append(ggpio.GetModeString(gpio_info.line_flags))
 	name_hbox.tooltip_text = '\n'.join(name_tooltip)
 
 	var char_icons_texts :Array[String] = []

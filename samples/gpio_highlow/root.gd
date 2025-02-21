@@ -10,7 +10,7 @@ var gpio27_level := 0
 
 func _ready():
 	ggpio.Init(true)
-	var sbc := ggpio.SBC.new('goshrimp.local')
+	var sbc := ggpio.SBC.new()
 	var chip := sbc.open_chip('0')
 	# get GPIO 27 in output mode
 	gpio27 = chip.open_gpio(27, ggpio.Mode.OUTPUT, ggpio.LineFlag.PULL_DOWN, ggpio.Level.LOW)

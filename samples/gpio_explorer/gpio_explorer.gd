@@ -77,6 +77,8 @@ func _on_gpio_picker_item_selected(index :int)-> void:
 	_chip = _sbc.open_chip(chip_id)
 	# get chip info
 	_chip_info = _chip.get_info()
+	if _chip_info == null:
+		return printerr('no _chip_info to work off')
 	chip_gpio_count_value.text = '(%s GPIOs)'%String.num_int64(_chip_info.gpio_count)
 	chip_name_value.text = _chip_info.name
 	chip_usage_value.text = _chip_info.usage

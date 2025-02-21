@@ -1,3 +1,5 @@
 .godot
 .editorconfig
 export_presets.cfg
+ggpio-explorer.sh
+ggpio-explorer.x86_64
