@@ -20,7 +20,7 @@ func list_chips() -> PackedStringArray:
 	return ['id0', 'id1', ...]
 	'''
 	const gpiochip_pattern := '/dev/gpiochip'
-	var res := ggpio.lg.FL(gpiochip_pattern, 5000, share_id).run(self)
+	var res := ggpio.lg.FL(gpiochip_pattern+'*', 5000).run(self)
 	if res[0] != OK:
 		ggpio.log(res[1], ggpio.LogLevel.ERROR)
 		return PackedStringArray()

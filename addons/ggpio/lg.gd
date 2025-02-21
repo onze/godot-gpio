@@ -2,8 +2,8 @@
 Static lg API
 '''
 
-static func FL(pat :String, num :int, share_id :int = ggpio.NO_SHARE) -> LGCommand:
-	return LGCommand.new().share(share_id).append_array(['fl', pat, String.num_int64(num)])
+static func FL(pat :String, num :int) -> LGCommand:
+	return LGCommand.new('-a').append_array(['fl', pat, String.num_int64(num)])
 
 static func GO(gc :String, share_id :int = ggpio.NO_SHARE) -> LGCommand:
 	return LGCommand.new().share(share_id).append_array(['go', gc])
@@ -44,6 +44,10 @@ static func GW(h :String, g :int, v: int, share_id :int = ggpio.NO_SHARE) -> LGC
 
 class LGCommand:
 	var tokens := PackedStringArray()
+	var rgs_flags := ''
+
+	func _init(rgs_flags := '') -> void:
+		self.rgs_flags = rgs_flags
 
 	func append(token :String) -> LGCommand:
 		tokens.append(token)
@@ -68,12 +72,16 @@ class LGCommand:
 			OS.set_environment('LG_PORT', sbc.port)
 		var output :Array[String] = []
 		ggpio.log('[CMD] %s'%[' '.join(tokens)], ggpio.LogLevel.VERBOSE)
-		var rcode := OS.execute('rgs', tokens, output, true, false)
+		var args := PackedStringArray()
+		if not rgs_flags.is_empty():
+			args.append(rgs_flags)
+		args.append_array(tokens)
+		var rcode := OS.execute('rgs', args, output, true, false)
 		var err := OK if rcode == 0 else FAILED
 		if err != OK:
 			ggpio.log(
 				'Error running command "%s" (rcode %s/%s): %s'%[
-					tokens,
+					args,
 					rcode,
 					ggpio.ErrorCodes.get(rcode, ''),
 					output.back() if output.size()>1 else '<empty stderr>'
