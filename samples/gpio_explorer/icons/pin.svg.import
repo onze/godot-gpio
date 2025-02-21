@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bniutp4a5jfox"
-path="res://.godot/imported/pin.svg-4d61d4a9e196fb4fd57a460519593772.ctex"
+path="res://.godot/imported/pin.svg-8756ff90723dcc80eaa806f7c0c4208f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://samples/gpio_viewer/icons/pin.svg"
-dest_files=["res://.godot/imported/pin.svg-4d61d4a9e196fb4fd57a460519593772.ctex"]
+source_file="res://samples/gpio_explorer/icons/pin.svg"
+dest_files=["res://.godot/imported/pin.svg-8756ff90723dcc80eaa806f7c0c4208f.ctex"]
 
 [params]
 

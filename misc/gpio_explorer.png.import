@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://l2758aqtqnwu"
-path="res://.godot/imported/refresh.png-176edf3e09904ea76e6d6a485dd1b314.ctex"
+uid="uid://rr1351r1eohr"
+path="res://.godot/imported/gpio_explorer.png-13662ae888a7a16ca61f93721b92c660.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://samples/gpio_viewer/icons/refresh.png"
-dest_files=["res://.godot/imported/refresh.png-176edf3e09904ea76e6d6a485dd1b314.ctex"]
+source_file="res://misc/gpio_explorer.png"
+dest_files=["res://.godot/imported/gpio_explorer.png-13662ae888a7a16ca61f93721b92c660.ctex"]
 
 [params]
 

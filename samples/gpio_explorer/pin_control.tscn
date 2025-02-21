@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://cdvr31q672hju"]
 
-[ext_resource type="Script" uid="uid://dlwiti4vu3a0h" path="res://samples/gpio_viewer/pin_control.gd" id="1_rdfwn"]
-[ext_resource type="Texture2D" uid="uid://bniutp4a5jfox" path="res://samples/gpio_viewer/icons/pin.svg" id="2_e7a2y"]
-[ext_resource type="Texture2D" uid="uid://duhhwdn2c4w8q" path="res://samples/gpio_viewer/icons/pin_wheel.svg" id="3_tw0u2"]
+[ext_resource type="Script" uid="uid://dlwiti4vu3a0h" path="res://samples/gpio_explorer/pin_control.gd" id="1_rdfwn"]
+[ext_resource type="Texture2D" uid="uid://bniutp4a5jfox" path="res://samples/gpio_explorer/icons/pin.svg" id="2_e7a2y"]
+[ext_resource type="Texture2D" uid="uid://duhhwdn2c4w8q" path="res://samples/gpio_explorer/icons/pin_wheel.svg" id="3_tw0u2"]
 
 [node name="PinControl" type="ColorRect"]
 custom_minimum_size = Vector2(0, 23)

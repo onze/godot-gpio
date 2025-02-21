@@ -1,10 +1,10 @@
 [gd_scene load_steps=4 format=3 uid="uid://chtd0486tkej4"]
 
-[ext_resource type="Script" uid="uid://brqv7o2thmrej" path="res://samples/gpio_viewer/linefeed_viewer.gd" id="1_vaubk"]
-[ext_resource type="Texture2D" uid="uid://l2758aqtqnwu" path="res://samples/gpio_viewer/icons/refresh.png" id="2_ab08t"]
-[ext_resource type="PackedScene" uid="uid://cdvr31q672hju" path="res://samples/gpio_viewer/pin_control.tscn" id="3_c7wxp"]
+[ext_resource type="Script" uid="uid://brqv7o2thmrej" path="res://samples/gpio_explorer/gpio_explorer.gd" id="1_hl6vb"]
+[ext_resource type="Texture2D" uid="uid://l2758aqtqnwu" path="res://samples/gpio_explorer/icons/refresh.png" id="2_xnf1c"]
+[ext_resource type="PackedScene" uid="uid://cdvr31q672hju" path="res://samples/gpio_explorer/pin_control.tscn" id="3_ywiu2"]
 
-[node name="PinoutViewer" type="Panel"]
+[node name="GPIOExplorer" type="Panel"]
 custom_minimum_size = Vector2(560, 500)
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,7 +13,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource("1_vaubk")
+script = ExtResource("1_hl6vb")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -41,7 +41,7 @@ unique_name_in_owner = true
 modulate = Color(0.831373, 0.831373, 0.831373, 1)
 layout_mode = 2
 text = "      "
-icon = ExtResource("2_ab08t")
+icon = ExtResource("2_xnf1c")
 icon_alignment = 1
 expand_icon = true
 
@@ -79,8 +79,8 @@ theme_override_constants/h_separation = 4
 theme_override_constants/v_separation = 0
 columns = 2
 
-[node name="PinControl" parent="VBoxContainer/ScrollContainer/pinout-grid" instance=ExtResource("3_c7wxp")]
+[node name="PinControl" parent="VBoxContainer/ScrollContainer/pinout-grid" instance=ExtResource("3_ywiu2")]
 layout_mode = 2
 
-[node name="PinControl2" parent="VBoxContainer/ScrollContainer/pinout-grid" instance=ExtResource("3_c7wxp")]
+[node name="PinControl2" parent="VBoxContainer/ScrollContainer/pinout-grid" instance=ExtResource("3_ywiu2")]
 layout_mode = 2

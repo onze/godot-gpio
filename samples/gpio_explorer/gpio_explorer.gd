@@ -20,7 +20,7 @@ var env :Dictionary[String, String] = {
 }
 
 func _ready() -> void:
-	get_window().title = 'Godot-LGPIO -- GPIO Viewer'
+	get_window().title = 'Godot-LGPIO -- GPIO Explorer'
 	lgpio.log_level = lgpio.LogLevel.DEBUG
 	OS.set_environment('LG_ADDR', 'goshrimp.local')
 	lgpio.Init(true)

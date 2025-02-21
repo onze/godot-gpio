@@ -31,7 +31,14 @@ It basically means a board (eg 1 Pi).
 </p>
 
 # Usage
-Check out scenes in the `samples` directory. Each scene can be played independently (`F6`).
+Check out scenes in the [samples](./samples) directory. Couple points:
+	- Each scene can be played independently (`F6`)
+	- the main scene is a GPIO explorer, kind of a live version of the pinout above,
+but dedicated to GPIO:
+<p align="center">
+  <img src="misc/gpio_explorer.png" alt="GPIO Explorer"/>
+</p>
+
 
 Note:
 - by default, `Godot-lgpio` connects to `localhost`, ie it access GPIOs of the board
