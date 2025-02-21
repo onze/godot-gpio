@@ -15,9 +15,11 @@ var pem :ggpio.devices.output.PhaseEnableMotor
 
 
 func _ready() -> void:
-	get_window().title = 'Motor Slider Control'
+	get_window().title = name
 	ggpio.log_level = ggpio.LogLevel.VERBOSE
 	ggpio.Utils.ParseDotEnv()
+	ggpio.Init(true)
+
 	chip = ggpio.SBC.new().open_chip()
 
 	play_btn.disabled = true

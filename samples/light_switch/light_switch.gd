@@ -10,8 +10,11 @@ var dod :ggpio.devices.output.DigitalOutputDevice
 
 
 func _ready() -> void:
+	get_window().title = name
 	ggpio.log_level = ggpio.LogLevel.VERBOSE
 	ggpio.Utils.ParseDotEnv()
+	ggpio.Init(true)
+
 	sbc = ggpio.SBC.new()
 	var chip := sbc.open_chip()
 	for gpio_id :int in chip.get_info().gpio_count:

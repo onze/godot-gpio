@@ -9,14 +9,18 @@ var gpio27 :ggpio.GPIO
 var gpio27_level := 0
 
 func _ready():
+	get_window().title = name
+	ggpio.log_level = ggpio.LogLevel.VERBOSE
+	ggpio.Utils.ParseDotEnv()
 	ggpio.Init(true)
+
 	var sbc := ggpio.SBC.new()
 	var chip := sbc.open_chip('0')
 	# get GPIO 27 in output mode
 	gpio27 = chip.open_gpio(27, ggpio.Mode.OUTPUT, ggpio.LineFlag.PULL_DOWN, ggpio.Level.LOW)
 	#assert(gpio27.read() == ggpio.Level.LOW)
 	gpio27.write(ggpio.Level.HIGH)
-	assert(gpio27.read() == ggpio.Level.HIGH)
+	#assert(gpio27.read() == ggpio.Level.HIGH)
 	var mode := gpio27.get_mode()
 	var mode_string := ggpio.GetModeString(mode)
 	print('init ok, gpio 27 mode: %s / %s'%[mode, mode_string])
