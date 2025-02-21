@@ -1,0 +1,33 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="lgpio-example"
+run/main_scene="uid://b8g5banofgqms"
+config/features=PackedStringArray("4.4", "Forward Plus")
+run/max_fps=12
+config/icon="res://icon.svg"
+
+[audio]
+
+driver/driver="Dummy"
+
+[display]
+
+display_server/driver="headless"
+
+[editor]
+
+run/main_run_args="--headless"
+
+[editor_plugins]
+
+enabled=PackedStringArray()
