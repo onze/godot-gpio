@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dxdetaiokj2ld"]
 
-[ext_resource type="Script" uid="uid://2mc0m45sqwta" path="res://samples/gpio_explorer/plot.gd" id="1_crii0"]
+[ext_resource type="Script" path="res://samples/gpio_explorer/plot.gd" id="1_crii0"]
 
 [node name="Plot" type="Control"]
 layout_mode = 3

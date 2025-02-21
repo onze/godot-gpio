@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cdvr31q672hju"]
 
-[ext_resource type="Script" uid="uid://dlwiti4vu3a0h" path="res://samples/gpio_explorer/pin_control.gd" id="1_rdfwn"]
+[ext_resource type="Script" path="res://samples/gpio_explorer/pin_control.gd" id="1_rdfwn"]
 [ext_resource type="Texture2D" uid="uid://bniutp4a5jfox" path="res://samples/gpio_explorer/icons/pin.svg" id="2_e7a2y"]
 [ext_resource type="PackedScene" uid="uid://dxdetaiokj2ld" path="res://samples/gpio_explorer/plot.tscn" id="2_wp7du"]
 [ext_resource type="Texture2D" uid="uid://duhhwdn2c4w8q" path="res://samples/gpio_explorer/icons/pin_wheel.svg" id="3_tw0u2"]

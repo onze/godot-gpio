@@ -20,7 +20,10 @@ func _ready()->void:
 
 func add_point(p :Vector2)->void:
 	_points.append(p)
-	_curve_colors.append(curve_color_low.lerp(curve_color_high, (p.y-y_min)/(y_max-y_min)))
+	_curve_colors.append(curve_color_low.lerp(
+		curve_color_high,
+		1.-(p.y-y_min)/(y_max-y_min)
+	))
 	queue_redraw()
 
 func _draw()->void:
@@ -51,11 +54,11 @@ func _draw()->void:
 		background_color,
 		true,
 	)
-	draw_rect(
-		Rect2(Vector2.ZERO, size),
-		Color.BLACK,
-		false,
-	)
+	#draw_rect(
+		#Rect2(Vector2.ZERO, size),
+		#Color.BLACK,
+		#false,
+	#)
 	# X axis
 	draw_line(
 		Vector2(rect.position.x+5, rect.get_center().y),

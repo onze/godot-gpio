@@ -89,7 +89,11 @@ static func _log(s:String, level :LogLevel) -> void:
 	print(prefix, s)
 #endregion
 
-static func Init(with_reset = false, env :Dictionary[String, String] = {}) -> void:
+static func Init(
+	with_reset = false,
+	#env :Dictionary[String, String] = {},
+	env :Dictionary = {},
+) -> void:
 	'''
 	with_reset: will close the default GPIO,
 	so as to reset it to its default state.
@@ -112,7 +116,8 @@ const ErrorCodes = {
 }
 static func Run(
 	cmd :Array[String],
-	env :Dictionary[String, String] = {}
+	#env :Dictionary[String, String] = {}
+	env :Dictionary = {}
 ) -> Array:
 	'''
 	Returns [Error, String].

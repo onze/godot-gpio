@@ -12,8 +12,8 @@ config_version=5
 
 config/name="ggpio"
 config/version="0.2"
-run/main_scene="uid://chtd0486tkej4"
-config/features=PackedStringArray("4.4", "Forward Plus")
+run/main_scene="res://samples/gpio_explorer/gpio_explorer.tscn"
+config/features=PackedStringArray("4.3", "Forward Plus")
 run/max_fps=12
 config/icon="res://ggpio.png"
 

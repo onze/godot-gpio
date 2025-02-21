@@ -17,7 +17,8 @@ var _chip :ggpio.Chip
 var _chip_info :ggpio.Chip.GICResult
 var _sync_timer := Timer.new()
 
-var env :Dictionary[String, String] = {
+#var env :Dictionary[String, String] = {
+var env :Dictionary = {
 	LG_ADDR=ggpio.DEFAULT_LG_ADDR,
 	LG_PORT=ggpio.DEFAULT_LG_PORT,
 }
@@ -99,7 +100,8 @@ func _on_gpio_picker_item_selected(index :int)-> void:
 
 func _sync_gpios() -> void:
 	# get line info in a single batched command
-	var pins :Dictionary[int, PinControl] = {}
+	#var pins :Dictionary[int, PinControl] = {}
+	var pins :Dictionary = {}
 	var GIL_query := PackedStringArray()
 	for line_id :int in pinout_grid.get_child_count():
 		var pin_control :PinControl = pinout_grid.get_child(line_id)

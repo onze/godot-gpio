@@ -7,7 +7,8 @@ var id :int = 0
 var id_string: String:
 	get: return String.num_int64(id)
 
-var _env :Dictionary[String, String] = {
+#var _env :Dictionary[String, String] = {
+var _env :Dictionary = {
 	LG_ADDR=ggpio.DEFAULT_LG_ADDR,
 	LG_PORT=ggpio.DEFAULT_LG_PORT,
 }
