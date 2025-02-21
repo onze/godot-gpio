@@ -19,16 +19,23 @@ Styling:
 @onready var icons_hbox: HBoxContainer = %'icons-hbox'
 @onready var char_icons: Label = %'char-icons'
 
-var gil :ggpio.GPIO.GILResult
 var gpio :ggpio.GPIO
+# null in _ready, then updated async
+var gil :ggpio.GPIO.GILResult = null:
+	get: return gil
+	set(value):
+		gil = value
+		_refresh_from_gil()
 
 const GPIO_COLOR := '#859900'
 const PULLUP_COLOR := Color.CRIMSON
 const PULLDOWN_COLOR := Color.CORNFLOWER_BLUE
 const UNSUPPORTED_COLOR := Color.DIM_GRAY
 
+var reversed_layout :bool:
+	get: return get_index() % 2 == 1
+
 func _ready() -> void:
-	var reversed_layout := get_index() % 2 == 1
 	var reverse_layout_direction := Control.LayoutDirection.LAYOUT_DIRECTION_RTL
 	if reversed_layout:
 		layout_direction = Control.LayoutDirection.LAYOUT_DIRECTION_RTL
@@ -38,14 +45,16 @@ func _ready() -> void:
 	# 7         7  "SPI_CE1_N" "spi0 CS1"
 	if gil == null:
 		gil = ggpio.GPIO.GILResult.new()
-		gil.gpio_id = -1
-		gil.user = 'user'
-		gil.purpose = 'purpose'
-		gil.line_flags = ggpio.LineFlag.PULL_UP
+		gil.gpio_id = -1 if gpio == null else gpio.id
+		gil.user = '<user>'
+		gil.purpose = '<purpose>'
+		#gil.line_flags = 0
 
+func _refresh_from_gil() -> void:
 	number_label.text = String.num_int64(gil.gpio_id)
 	name_label.text = gil.user
-	name = name_label.text
+	if not name_label.text.is_empty():
+		name = name_label.text
 	if gil.is_GPIO:
 		pin_icon.modulate = Color(GPIO_COLOR)
 	else:
@@ -54,8 +63,6 @@ func _ready() -> void:
 	var name_tooltip :Array[String] = []
 	if not gil.purpose.is_empty():
 		name_label.text += ' (%s)'%gil.purpose
-	if gil.gpio_id == 2:
-		print('ok')
 	name_tooltip.append('%s->%s'%[gil.line_flags, ggpio.GetModeString(gil.line_flags)])
 	name_hbox.tooltip_text = '\n'.join(name_tooltip)
 
