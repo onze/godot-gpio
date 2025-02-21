@@ -26,12 +26,12 @@ const VOLTAGE_PLOT_WINDOW_S := 10.
 
 var gpio :ggpio.GPIO
 # null in _ready, then updated async
-var gil :ggpio.GPIO.GILResult = null:
-	get: return gil
+var gpio_info :ggpio.GPIO.GPIOInfo = null:
+	get: return gpio_info
 	set(value):
-		gil = value
-		if gil != null:
-			_refresh_from_gil()
+		gpio_info = value
+		if gpio_info != null:
+			_refresh_from_gpio_info()
 var voltage := Vector2.ZERO:
 	get: return voltage
 	set(value):
@@ -54,12 +54,12 @@ func _ready() -> void:
 	icons_hbox.layout_direction = reverse_layout_direction
 	# gpio_id, fl, user,       purpose
 	# 7         7  "SPI_CE1_N" "spi0 CS1"
-	if gil == null:
-		gil = ggpio.GPIO.GILResult.new()
-		gil.gpio_id = -1 if gpio == null else gpio.id
-		gil.user = '<user>'
-		gil.purpose = '<purpose>'
-		#gil.line_flags = 0
+	if gpio_info == null:
+		gpio_info = ggpio.GPIO.GPIOInfo.new()
+		gpio_info.gpio_id = -1 if gpio == null else gpio.gpio_id
+		gpio_info.user = '<user>'
+		gpio_info.purpose = '<purpose>'
+		#gpio_info.line_flags = 0
 
 	# plot setup
 	voltage_plot.y_min = -1.
@@ -72,26 +72,26 @@ func _ready() -> void:
 	voltage_plot.curve_color_low = Color.DARK_GREEN
 	voltage_plot.width = 1.
 
-func _refresh_from_gil() -> void:
-	number_label.text = String.num_int64(gil.gpio_id)
-	name_label.text = gil.user
+func _refresh_from_gpio_info() -> void:
+	number_label.text = String.num_int64(gpio_info.gpio_id)
+	name_label.text = gpio_info.user
 	if not name_label.text.is_empty():
 		name = name_label.text
-	if gil.is_GPIO:
+	if gpio_info.is_GPIO:
 		pin_icon.modulate = Color(GPIO_COLOR)
 	else:
 		pin_icon.modulate = UNSUPPORTED_COLOR
 
 	var name_tooltip :Array[String] = []
-	if not gil.purpose.is_empty():
-		name_label.text += ' (%s)'%gil.purpose
-	name_tooltip.append('%s->%s'%[gil.line_flags, ggpio.GetModeString(gil.line_flags)])
+	if not gpio_info.purpose.is_empty():
+		name_label.text += ' (%s)'%gpio_info.purpose
+	name_tooltip.append('%s->%s'%[gpio_info.line_flags, ggpio.GetModeString(gpio_info.line_flags)])
 	name_hbox.tooltip_text = '\n'.join(name_tooltip)
 
 	var char_icons_texts :Array[String] = []
 	var icons_hbox_tooltip :Array[String] = []
 	var add_char_icon := func(flag :int, chars :String, tt :String)->bool:
-		if gil.line_flags & flag:
+		if gpio_info.line_flags & flag:
 			# in use by kernel
 			char_icons_texts.append(chars)
 			icons_hbox_tooltip.append(tt)

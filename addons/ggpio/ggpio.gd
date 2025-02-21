@@ -9,13 +9,17 @@ by gpiozero: https://gpiozero.readthedocs.io).
 ## https://abyz.me.uk/lg/rgs.html
 
 const devices = preload('devices/devices.gd')
+const lg = preload('lg.gd')
 const Utils = preload('utils.gd')
+const SBC = preload('sbc.gd')
 const Chip = preload('chip.gd')
 const GPIO = preload('gpio.gd')
 
 const DEFAULT_LG_ADDR :String = 'localhost'
 const DEFAULT_LG_PORT :String = '8889'
 const DEFAULT_SHARE_ID := 1
+# use it to disable sharing in lg commands
+const NO_SHARE := -1
 
 enum LineFlag {
 	ACTIVE_LOW = 4,
@@ -35,6 +39,12 @@ static func GetModeString(mode :int, sep := '|') -> String:
 			modes.append(ModeStrings.get(1<<i, ''))
 	return sep.join(modes)
 
+enum Mode {
+	INPUT=1<<8,
+	OUTPUT=1<<9,
+	UNSET=-1,
+}
+
 const ModeStrings = {
 	1<<0: 'Kernel: In use by the kernel', #1
 	1<<1: 'Kernel: Output', #2
@@ -44,8 +54,8 @@ const ModeStrings = {
 	LineFlag.PULL_UP: 'Kernel: Pull up set', #32
 	LineFlag.PULL_DOWN: 'Kernel: Pull down set', #64
 	LineFlag.PULL_NONE: 'Kernel: Pulls off set', #128
-	1<<8: 'LG: Input', #256
-	1<<9: 'LG: Output', #512
+	Mode.INPUT: 'LG: Input', #256
+	Mode.OUTPUT: 'LG: Output', #512
 	1<<10: 'LG: Alert',
 	1<<11: 'LG: Group',
 	1<<12: 'LG: ---',

@@ -13,18 +13,18 @@ extends Control
 @onready var pinout_grid: GridContainer = %'pinout-grid'
 #endregion
 
+var _sbc :ggpio.SBC
 var _chip :ggpio.Chip
-var _chip_info :ggpio.Chip.GICResult
+var _chip_info :ggpio.Chip.ChipInfo
 var _sync_timer := Timer.new()
 
-#var env :Dictionary[String, String] = {
-var env :Dictionary = {
-	LG_ADDR=ggpio.DEFAULT_LG_ADDR,
-	LG_PORT=ggpio.DEFAULT_LG_PORT,
-}
-
 func _ready() -> void:
-	_parse_command_line()
+	#var env :Dictionary[String, String] = {
+	var env :Dictionary = {
+		LG_ADDR=ggpio.DEFAULT_LG_ADDR,
+		LG_PORT=ggpio.DEFAULT_LG_PORT,
+	}
+	_parse_command_line(env)
 	add_child(_sync_timer)
 	_sync_timer.timeout.connect(_sync_gpios)
 	_sync_timer.stop()
@@ -32,6 +32,8 @@ func _ready() -> void:
 		ProjectSettings.get_setting('application/config/version')
 	]
 	ggpio.log_level = ggpio.LogLevel.DEBUG
+
+	ggpio.Init(true)
 	for kv :Array in [['LG_ADDR', ggpio.DEFAULT_LG_ADDR], ['LG_PORT', ggpio.DEFAULT_LG_PORT]]:
 		var key :String = kv[0]
 		var default_value :String = kv[1]
@@ -40,10 +42,8 @@ func _ready() -> void:
 			value = default_value
 		print('%s=%s'%[key, value])
 		OS.set_environment(key, value)
+	_sbc = ggpio.SBC.new(env.get('LG_ADDR'), env.get('LG_PORT'))
 
-	ggpio.Init(true)
-
-	_chip = ggpio.Chip.new(0, {LG_ADDR='goshrimp.local'})
 	refresh_gpio_btn.pressed.connect(_start_populating_gpiochips)
 	gpio_picker.item_selected.connect(_on_gpio_picker_item_selected)
 	sync_freq_btn.item_selected.connect(_update_sync_freq)
@@ -60,38 +60,30 @@ func _start_populating_gpiochips() -> void:
 	_continue_populating_gpiochips()
 
 func _continue_populating_gpiochips() -> void:
-	const gpiochip_pattern := '/dev/gpiochip'
-	var res := ggpio.Run(['FL', '-a', gpiochip_pattern+'*', '5000'], env)
-	if res[0] != OK:
-		return ggpio.log(res[1], ggpio.LogLevel.ERROR)
-	var res1 := res[1] as String
-	var buffer := res1.substr(res1.find(' ')+1)
-
+	var chip_ids := _sbc.list_chips()
 	var item_id := 0
-	for line :String in buffer.split('\n', false):
-		var chip_id := line.substr(gpiochip_pattern.length())
+	for chip_id :String in chip_ids:
 		gpio_picker.add_item('gpiochip%s'%chip_id)
 		gpio_picker.set_item_metadata(item_id, chip_id)
 		item_id += 1
 
-	if not buffer.is_empty():
+	if not chip_ids.is_empty():
 		gpio_picker.select(0)
 		_on_gpio_picker_item_selected(0)
 
 func _on_gpio_picker_item_selected(index :int)-> void:
 	# create chip
 	var chip_id :String = gpio_picker.get_item_metadata(gpio_picker.get_item_id(index))
-	_chip = ggpio.Chip.new(int(chip_id), env)
+	_chip = _sbc.open_chip(chip_id)
 	# get chip info
-	_chip.GO()
-	_chip_info = _chip.GIC()
+	_chip_info = _chip.get_info()
 	chip_gpio_count_value.text = '(%s GPIOs)'%String.num_int64(_chip_info.gpio_count)
 	chip_name_value.text = _chip_info.name
 	chip_usage_value.text = _chip_info.usage
 	# pupolate lineFeeds
 	for line_id :int in _chip_info.gpio_count:
 		var pin_control :PinControl = preload('pin_control.tscn').instantiate()
-		pin_control.gpio = ggpio.GPIO.new(line_id, _chip)
+		pin_control.gpio = _chip.open_gpio(line_id)
 		pinout_grid.add_child(pin_control)
 	# manually ask for this refresh
 	_sync_gpios()
@@ -100,32 +92,32 @@ func _sync_gpios() -> void:
 	# get line info in a single batched command
 	#var pins :Dictionary[int, PinControl] = {}
 	var pins :Dictionary = {}
-	var GIL_query := PackedStringArray()
+	var GIL_query := ggpio.lg.LGCommand.new().share(_sbc.share_id)
 	for line_id :int in pinout_grid.get_child_count():
 		var pin_control :PinControl = pinout_grid.get_child(line_id)
 		pins[line_id] = pin_control
-		GIL_query.append_array(['GIL', _chip.id, line_id])
+		GIL_query.append_array(['GIL', _chip.chip_id, line_id])
 
-	var res :Array = _chip.run(GIL_query)
+	var res :Array = GIL_query.run(_sbc)
 	if res[0] != OK:
 		printerr("error GIL'ing gpios")
 	var GILlines := (res[1] as String).split('\n')
 
 	var dt :float = Time.get_ticks_msec() / 1000.
 	for line_id :int in pins:
-		var gil := ggpio.GPIO.GILResult.Parse(GILlines[line_id])
+		var gpio_info := ggpio.GPIO.GPIOInfo.Parse(GILlines[line_id])
 		var pin_control :PinControl = pins[line_id]
-		pin_control.gil = gil
+		pin_control.gpio_info = gpio_info
 
 	# now building GR query (had to pull GIL info first, to know which GPIO to read)
-	var GR_query := PackedStringArray()
+	var GR_query := ggpio.lg.LGCommand.new().share(_sbc.share_id)
 	var read_gpio_indexes := PackedInt32Array()
 	for line_id :int in pins:
 		var pin_control :PinControl = pins[line_id]
-		if pin_control.gil.is_GPIO:
+		if pin_control.gpio_info.is_GPIO:
 			read_gpio_indexes.append(line_id)
-			GR_query.append_array(['GR', _chip.id, line_id])
-	res = _chip.run(GR_query)
+			GR_query.append_array(['GR', _chip.chip_id, line_id])
+	res = GR_query.run(_sbc)
 	if res[0] != OK:
 		printerr("error GR'ing gpios")
 	var GRlines := (res[1] as String).split('\n')
@@ -148,7 +140,7 @@ func _update_sync_freq(item_index :int):
 func _usage() -> void:
 	print('USAGE: --host=HOST --port=PORT')
 
-func _parse_command_line() -> void:
+func _parse_command_line(env :Dictionary) -> void:
 	var args := OS.get_cmdline_user_args()
 	if '--help' in args:
 		return _usage()

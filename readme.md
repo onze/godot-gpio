@@ -29,19 +29,24 @@ depending on you situation) [install](#requirements) `rgs`
 Here's a quick rundown of the main classes:
 - `ggpio`: `class_name`'d to make it globally available, it can be considered a
 namespace for the project, so that no other gd script needs to be imported in most cases.
+- `ggpio.SBC`: (Single Board Computer). That's the host we'll be interacting with.
 - `ggpio.Chip`: refers to a gpiochip under [the kernel's GPIO driver interface](https://docs.kernel.org/driver-api/gpio/driver.html).
-It basically means a board (eg 1 Pi).
-- `ggpio.GPIO`: this is a single pin on a board. GPIOs on a PI are numbererd
+Most of the time we're workin with gpio `0`.
+- `ggpio.GPIO`: this is a single pin on a board. GPIOs on a Pi are numbererd
 [as such](https://pinout.xyz/):
 <p align="center">
   <img src="misc/rpi_pinout.png" alt="RPi pinout"/>
 </p>
 
+**Note** that some pins in the diagram above are not GPIO, and as such, won't be visible in the lib. Reversely, depending on the SBC, 
+some devices may appears as GPIO while not being mentioned in the diagram above.
+- `ggpio.lg` this is where the low level `lg`/`rpio` interface is implemented. The flow is to create an `LGCommand` and `run` it on an `SBC`.
+
 # Usage
 Check out scenes in the [samples](./samples) directory. Couple points:
 
 - Each scene can be played independently (`F6`)
-- the main scene is GPIO explorer, kind of a live version of the pinout above,
+- the main scene is *GPIO explorer*, kind of a live version of the pinout above,
 but dedicated to GPIO:
 <p align="center">
   <img src="misc/gpio_explorer.png" alt="GPIO Explorer"/>
@@ -122,7 +127,7 @@ track which which parts of [rgs API](https://abyz.me.uk/lg/rgs.html) are support
 | FR      | ✖         |
 | FW      | ✖         |
 | FS      | ✖         |
-| FL      | ✖         |
+| FL      | ✔        |
 | GPIO    | --------- |
 | GO      | ✔         |
 | GC      | ✔         |
@@ -136,11 +141,11 @@ track which which parts of [rgs API](https://abyz.me.uk/lg/rgs.html) are support
 | GSA     | ✖         |
 | GSAX    | ✖         |
 | GSF     | ✔        |
-| GSGI    | ✔        |
-| GSGIX   | ✔        |
-| GSGO    | ✔        |
-| GSGOX   | ✔        |
-| GSGF    | ✔        |
+| GSGI    | ✖        |
+| GSGIX   | ✖        |
+| GSGO    | ✖        |
+| GSGOX   | ✖        |
+| GSGF    | ✖        |
 | GR      | ✔        |
 | GW      | ✔        |
 | GGR     | ✖         |
