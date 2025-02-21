@@ -22,7 +22,8 @@ driver/driver="Dummy"
 
 [display]
 
-window/size/viewport_height=864
+window/size/viewport_width=680
+window/size/viewport_height=660
 window/size/initial_position_type=2
 
 [editor_plugins]

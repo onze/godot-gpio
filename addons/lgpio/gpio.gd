@@ -13,10 +13,42 @@ func _init(id :int, chip :lgpio.Chip) -> void:
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
-		lgpio._log('freeing GPIO(%s)'%id, lgpio.LogLevel.DEBUG)
-		GSF()
+		if self != null:
+			lgpio._log('freeing GPIO(%s)'%id, lgpio.LogLevel.DEBUG)
+			GSF()
 
-func GIL() -> String:
+class GILResult extends RefCounted:
+	var raw :String
+
+	var gpio_id :int
+	var line_flags :lgpio.LineFlag
+	var user :String
+	var purpose :String
+
+	var is_GPIO :bool:
+		get: return user.begins_with('GPIO')
+
+	static func Parse(line :String) -> GILResult:
+		# sample lines:
+		#7 7 "SPI_CE1_N" "spi0 CS1"
+		#0 65536 "ID_SDA" ""
+		var ret := GILResult.new()
+		ret.raw = line
+		var start_index := 0
+		var end_index := line.find(' ') # first space
+		ret.gpio_id = int(line.substr(start_index, end_index-start_index))
+		start_index=end_index+1 # first lf char
+		end_index=line.find(' ', start_index+1) # space after lf
+		ret.line_flags = int(line.substr(start_index, end_index-start_index))
+		start_index=line.find('"', end_index+1) # left dquote of user
+		end_index=line.find('"', start_index+1) # right dquote of user
+		ret.user = line.substr(start_index+1, end_index-start_index-1)
+		start_index=line.find('"', end_index+1) # left dquote of purpose
+		end_index=line.find('"', start_index+1) # right dquote of purpose
+		ret.purpose = line.substr(start_index+1, end_index-start_index-1)
+		return ret
+
+func GIL() -> GILResult:
 	'''
 	Gets information for GPIO g of an opened gpiochip. In particular it gets the GPIO number, line flags, its user, and its purpose.
 	The meaning of the line flags bits are as given for the mode by GMODE.
@@ -25,9 +57,11 @@ func GIL() -> String:
 	var res := chip.run(['gil', chip.id_string, id_string])
 	if res[0] != OK:
 		lgpio._log('GIL errored: %s'%res[1], lgpio.LogLevel.ERROR)
-		return ''
-	# TODO split this result in an array of GILResult{GPIO id, line flags, user, purpose}
-	return res[1]
+		var ret := GILResult.new()
+		ret.gpio_id = -1
+		ret.user = 'error'
+		return ret
+	return GILResult.Parse(res[1])
 
 func GMODE() -> int:
 	'''

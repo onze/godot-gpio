@@ -1,0 +1,86 @@
+[gd_scene load_steps=4 format=3 uid="uid://chtd0486tkej4"]
+
+[ext_resource type="Script" uid="uid://brqv7o2thmrej" path="res://samples/gpio_viewer/linefeed_viewer.gd" id="1_vaubk"]
+[ext_resource type="Texture2D" uid="uid://l2758aqtqnwu" path="res://samples/gpio_viewer/icons/refresh.png" id="2_ab08t"]
+[ext_resource type="PackedScene" uid="uid://cdvr31q672hju" path="res://samples/gpio_viewer/pin_control.tscn" id="3_c7wxp"]
+
+[node name="PinoutViewer" type="Panel"]
+custom_minimum_size = Vector2(560, 500)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_vaubk")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="top-menu" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="gpio-picker" type="OptionButton" parent="VBoxContainer/top-menu"]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+item_count = 1
+popup/item_0/text = "gpiochip0"
+popup/item_0/id = 0
+
+[node name="refresh-gpio-btn" type="Button" parent="VBoxContainer/top-menu"]
+unique_name_in_owner = true
+modulate = Color(0.831373, 0.831373, 0.831373, 1)
+layout_mode = 2
+text = "      "
+icon = ExtResource("2_ab08t")
+icon_alignment = 1
+expand_icon = true
+
+[node name="chip-title" type="HBoxContainer" parent="VBoxContainer/top-menu"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="chip-name-value" type="Label" parent="VBoxContainer/top-menu/chip-title"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="slash" type="Label" parent="VBoxContainer/top-menu/chip-title"]
+layout_mode = 2
+text = " / "
+
+[node name="chip-usage-value" type="Label" parent="VBoxContainer/top-menu/chip-title"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="chip-gpio-count-value" type="Label" parent="VBoxContainer/top-menu/chip-title"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="pinout-grid" type="GridContainer" parent="VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 0
+columns = 2
+
+[node name="PinControl" parent="VBoxContainer/ScrollContainer/pinout-grid" instance=ExtResource("3_c7wxp")]
+layout_mode = 2
+
+[node name="PinControl2" parent="VBoxContainer/ScrollContainer/pinout-grid" instance=ExtResource("3_c7wxp")]
+layout_mode = 2

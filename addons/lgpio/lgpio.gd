@@ -13,8 +13,9 @@ const Utils = preload('utils.gd')
 const Chip = preload('chip.gd')
 const GPIO = preload('gpio.gd')
 
-static var DEFAULT_LG_ADDR :String = 'localhost'
-static var DEFAULT_LG_PORT :int = 8889
+const DEFAULT_LG_ADDR :String = 'localhost'
+const DEFAULT_LG_PORT :int = 8889
+const DEFAULT_SHARE_ID := 1
 
 enum LineFlag {
 	ACTIVE_LOW = 4,
@@ -35,16 +36,16 @@ static func GetModeString(mode :int, sep := '|') -> String:
 	return sep.join(modes)
 
 const ModeStrings = {
-	1<<0: 'Kernel: In use by the kernel',
-	1<<1: 'Kernel: Output',
-	LineFlag.ACTIVE_LOW: 'Kernel: Active low',
-	LineFlag.OPEN_DRAIN: 'Kernel: Open drain',
-	LineFlag.OPEN_SOURCE: 'Kernel: Open source',
-	LineFlag.PULL_UP: 'Kernel: Pull up set',
-	LineFlag.PULL_DOWN: 'Kernel: Pull down set',
-	LineFlag.PULL_NONE: 'Kernel: Pulls off set',
-	1<<8: 'LG: Input',
-	1<<9: 'LG: Output',
+	1<<0: 'Kernel: In use by the kernel', #1
+	1<<1: 'Kernel: Output', #2
+	LineFlag.ACTIVE_LOW: 'Kernel: Active low', #4
+	LineFlag.OPEN_DRAIN: 'Kernel: Open drain', #8
+	LineFlag.OPEN_SOURCE: 'Kernel: Open source', #16
+	LineFlag.PULL_UP: 'Kernel: Pull up set', #32
+	LineFlag.PULL_DOWN: 'Kernel: Pull down set', #64
+	LineFlag.PULL_NONE: 'Kernel: Pulls off set', #128
+	1<<8: 'LG: Input', #256
+	1<<9: 'LG: Output', #512
 	1<<10: 'LG: Alert',
 	1<<11: 'LG: Group',
 	1<<12: 'LG: ---',
@@ -86,8 +87,6 @@ static func _log(s:String, level :LogLevel) -> void:
 		LogLevel.ERROR: prefix = '[ERR] '
 	print(prefix, s)
 #endregion
-
-const DEFAULT_SHARE_ID := 1
 
 static func Init(with_reset = false, env :Dictionary[String, String] = {}) -> void:
 	'''
