@@ -4,13 +4,14 @@ Represents a generic motor connected to a Phase/Enable motor driver circuit;
 - phase controls whether the motor turns forwards (0) or backwards (1)
 - enable controls the speed with PWM
 '''
-const PhaseEnableMotor = preload('phase_enable_motor.gd')
 const DigitalOutputDevice = preload('digital_output_device.gd')
+const PWMOutputDevice = preload('pwm_output_device.gd')
+const PhaseEnableMotor = preload('phase_enable_motor.gd')
 
 static func Make(chip :ggpio.Chip, phase :int, enable :int) -> PhaseEnableMotor:
 	return PhaseEnableMotor.new(
 		DigitalOutputDevice.Make(chip, phase),
-		DigitalOutputDevice.Make(chip, enable),
+		PWMOutputDevice.Make(chip, enable),
 	)
 
 var is_active :bool:
@@ -31,11 +32,11 @@ var value :float = 0:
 			stop()
 
 var phase :ggpio.devices.output.DigitalOutputDevice
-var enable :ggpio.devices.output.DigitalOutputDevice
+var enable :ggpio.devices.output.PWMOutputDevice
 
 func _init(
 	phase :ggpio.devices.output.DigitalOutputDevice,
-	enable :ggpio.devices.output.DigitalOutputDevice,
+	enable :ggpio.devices.output.PWMOutputDevice,
 )->void:
 	self.phase = phase
 	self.enable = enable

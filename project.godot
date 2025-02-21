@@ -29,4 +29,4 @@ window/size/initial_position_type=2
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/ggpio/plugin.cfg")
+enabled=PackedStringArray("res://addons/ggpio/plugin.cfg", "res://addons/script-dock/plugin.cfg")

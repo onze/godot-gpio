@@ -126,61 +126,8 @@ func write(value :int) -> void:
 	'''
 	ggpio.lg.GW(chip.chip_id, gpio_id, value, chip.sbc.share_id).run(chip.sbc)
 
-#func GP(value :float, mon :int, moff :int) -> void:
-	#'''
-	#Starts software timed pulses on this GPIO.
-	#Each cycle consists of `mon` microseconds of GPIO high followed by `moff`
-	#microseconds of GPIO low.
-#
-	#PWM is characterised by two values:
-	#- its frequency (number of cycles per second)
-	#- its duty cycle (percentage of high time per cycle).
-#
-	#The set frequency will be 1000000 / (mon + moff) Hz.
-	#The set duty cycle will be mon / (mon + moff) * 100 %.
-#
-	#E.g. if mon is 50 and moff is 100 the frequency will be 6666.67 Hz and the
-	#duty cycle will be 33.33 %.
-	#'''
-	#chip.run(['GP', chip.id_string, id_string, String.num_int64(mon), String.num_int64(moff)])
-#
-#func GPX(value :float, mon :int, moff :int, off: int, cyc: int) -> void:
-	#'''
-	#Starts software timed pulses on this GPIO.
-#
-	#`cyc` cycles are transmitted (0 means infinite).
-	#Each cycle consists of `mon` microseconds of GPIO high followed by
-	#`moff` microseconds of GPIO low.
-#
-	#PWM is characterised by two values:
-	#- its frequency (number of cycles per second)
-	#- its duty cycle (percentage of high time per cycle).
-#
-	#The set frequency will be 1000000 / (mon + moff) Hz.
-	#The set duty cycle will be mon / (mon + moff) * 100 %.
-#
-	#E.g. if mon is 50 and moff is 100 the frequency will be 6666.67 Hz and the
-	#duty cycle will be 33.33 %.
-#
-	#off is a microsecond offset from the natural start of the PWM cycle.
-	#For instance if the PWM frequency is 10 Hz the natural start of each cycle
-	#is at seconds 0, then 0.1, 0.2, 0.3 etc. In this case if the offset is
-	#20000 microseconds the cycle will start at seconds 0.02, 0.12, 0.22, 0.32 etc.
-#
-	#Another command may be issued to the GPIO before the last has finished.
-#
-	#If the last command had infinite cycles (cyc of 0) then it will be replaced
-	#by the new settings at the end of the current cycle. Otherwise it will be
-	#replaced by the new settings at the end of cyc cycles.
-#
-	#Multiple pulse settings may be queued in this way.
-	#'''
-	#chip.run([
-		#'GPX',
-		#chip.id_string,
-		#id_string,
-		#String.num_int64(mon),
-		#String.num_int64(moff),
-		#String.num_int64(off),
-		#String.num_int64(cyc),
-	#])
+func pwm(freq_hz :int, duty_cycle :int, off := 0, cyc := 0) -> void:
+	'''
+	Starts software timed PWM on an output GPIO.
+	'''
+	ggpio.lg.PX(chip.chip_id, gpio_id, freq_hz, duty_cycle, off, cyc, chip.sbc.share_id).run(chip.sbc)

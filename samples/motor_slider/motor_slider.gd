@@ -15,6 +15,7 @@ var pem :ggpio.devices.output.PhaseEnableMotor
 
 
 func _ready() -> void:
+	get_window().title = 'Motor Slider Control'
 	ggpio.log_level = ggpio.LogLevel.VERBOSE
 	ggpio.Utils.ParseDotEnv()
 	chip = ggpio.SBC.new().open_chip()
@@ -66,6 +67,7 @@ func _on_play_pressed() -> void:
 		phase_selector.selected,
 		enable_selector.selected,
 	)
+	pem.value = 0
 
 func _on_stop_pressed()->void:
 	value_slider.value = 0

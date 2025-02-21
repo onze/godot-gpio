@@ -40,6 +40,16 @@ static func GR(h :String, g :int, share_id :int = ggpio.NO_SHARE) -> LGCommand:
 
 static func GW(h :String, g :int, v: int, share_id :int = ggpio.NO_SHARE) -> LGCommand:
 	return LGCommand.new().share(share_id).append_array(['gw', h, String.num_int64(g), String.num_int64(v)])
+static func PX(h :String, g :int, pf: int, pdc :int, off := 0, cyc := 0, share_id :int = ggpio.NO_SHARE) -> LGCommand:
+	return LGCommand.new().share(share_id).append_array([
+		'px',
+		h,
+		String.num_int64(g),
+		String.num_int64(pf),
+		String.num_int64(pdc),
+		String.num_int64(off),
+		String.num_int64(cyc),
+	])
 
 
 class LGCommand:
