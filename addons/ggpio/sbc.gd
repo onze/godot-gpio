@@ -4,9 +4,9 @@ SBC == Single Board Compter
 This class wraps connection information
 '''
 
-var share_id :int = ggpio.DEFAULT_SHARE_ID
 var host :String
 var port :String
+var share_id :int = ggpio.DEFAULT_SHARE_ID
 
 func _init(
 	host :String = ggpio.DEFAULT_LG_ADDR,
