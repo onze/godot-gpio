@@ -27,7 +27,9 @@ func _ready() -> void:
 	add_child(_sync_timer)
 	_sync_timer.timeout.connect(_sync_gpios)
 	_sync_timer.stop()
-	get_window().title = 'GGPIO -- GPIO Explorer'
+	get_window().title = 'GGPIO Explorer -- v%s'%[
+		ProjectSettings.get_setting('application/config/version')
+	]
 	ggpio.log_level = ggpio.LogLevel.DEBUG
 	for kv :Array in [['LG_ADDR', ggpio.DEFAULT_LG_ADDR], ['LG_PORT', ggpio.DEFAULT_LG_PORT]]:
 		var key :String = kv[0]
