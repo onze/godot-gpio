@@ -27,6 +27,18 @@ var value :float:
 		else:
 			on()
 
+var is_on :bool:
+	get: return value > .0
+	set(flag):
+		if flag:
+			on()
+		else:
+			off()
+var is_off :bool:
+	get: return not is_on
+	set(flag):
+		is_on = not flag
+
 func _init(gpio :ggpio.GPIO, active_high := true) -> void:
 	self.gpio = gpio
 	if not active_high:
