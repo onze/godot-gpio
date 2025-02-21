@@ -17,12 +17,12 @@ var value :float = 0:
 		else:
 			stop()
 
-var _phase :lgpio.GPIO
-var _enable :lgpio.GPIO
+var _phase :ggpio.GPIO
+var _enable :ggpio.GPIO
 
 func _init(
-	phase :lgpio.GPIO,
-	enable :lgpio.GPIO,
+	phase :ggpio.GPIO,
+	enable :ggpio.GPIO,
 )->void:
 	_phase = phase
 	_enable = enable

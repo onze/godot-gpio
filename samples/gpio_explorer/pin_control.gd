@@ -19,8 +19,8 @@ Styling:
 @onready var icons_hbox: HBoxContainer = %'icons-hbox'
 @onready var char_icons: Label = %'char-icons'
 
-var gil :lgpio.GPIO.GILResult
-var gpio :lgpio.GPIO
+var gil :ggpio.GPIO.GILResult
+var gpio :ggpio.GPIO
 
 const GPIO_COLOR := '#859900'
 const PULLUP_COLOR := Color.CRIMSON
@@ -37,11 +37,11 @@ func _ready() -> void:
 	# gpio_id, fl, user,       purpose
 	# 7         7  "SPI_CE1_N" "spi0 CS1"
 	if gil == null:
-		gil = lgpio.GPIO.GILResult.new()
+		gil = ggpio.GPIO.GILResult.new()
 		gil.gpio_id = -1
 		gil.user = 'user'
 		gil.purpose = 'purpose'
-		gil.line_flags = lgpio.LineFlag.PULL_UP
+		gil.line_flags = ggpio.LineFlag.PULL_UP
 
 	number_label.text = String.num_int64(gil.gpio_id)
 	name_label.text = gil.user
@@ -56,7 +56,7 @@ func _ready() -> void:
 		name_label.text += ' (%s)'%gil.purpose
 	if gil.gpio_id == 2:
 		print('ok')
-	name_tooltip.append('%s->%s'%[gil.line_flags, lgpio.GetModeString(gil.line_flags)])
+	name_tooltip.append('%s->%s'%[gil.line_flags, ggpio.GetModeString(gil.line_flags)])
 	name_hbox.tooltip_text = '\n'.join(name_tooltip)
 
 	var char_icons_texts :Array[String] = []
@@ -68,17 +68,17 @@ func _ready() -> void:
 			icons_hbox_tooltip.append(tt)
 			return true
 		return false
-	#if add_char_icon.call(1, 'K', 'K: '+lgpio.ModeStrings[1]):
+	#if add_char_icon.call(1, 'K', 'K: '+ggpio.ModeStrings[1]):
 		#name_hbox.modulate = Color.GRAY
 		#icons_hbox.modulate = Color.GRAY
 		#number_label.modulate = Color.GRAY
 	add_char_icon.call(1<<8 | 1<<16, '(I)', 'I: Input')
 	add_char_icon.call(1<<1 | 1<<9, '(O)', 'O: Output')
 	add_char_icon.call(1<<10, '(A)', '(A): Alert')
-	if add_char_icon.call(lgpio.LineFlag.PULL_UP, '(PU)', 'PU: Pull Up'):
+	if add_char_icon.call(ggpio.LineFlag.PULL_UP, '(PU)', 'PU: Pull Up'):
 		pin_center.modulate = PULLUP_COLOR
 		pin_container.tooltip_text = 'Pull Up'
-	elif add_char_icon.call(lgpio.LineFlag.PULL_DOWN, '(PD)', 'PD: Pull Down'):
+	elif add_char_icon.call(ggpio.LineFlag.PULL_DOWN, '(PD)', 'PD: Pull Down'):
 		pin_center.modulate = PULLDOWN_COLOR
 		pin_container.tooltip_text = 'Pull Down'
 	else:

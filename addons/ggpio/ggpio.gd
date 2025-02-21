@@ -1,6 +1,6 @@
-class_name lgpio
+class_name ggpio
 '''
-GDScript wrapper for the lgpio library: https://abyz.me.uk/rpi/lgpio.
+GDScript addon to access Raspberri PI GPIO.
 Offers a few high-level classes to abstract common use cases (inspired
 by gpiozero: https://gpiozero.readthedocs.io).
 '''
@@ -74,7 +74,7 @@ enum LogLevel {
 	WARNING = 2,
 	ERROR = 3,
 }
-static var log_level := lgpio.LogLevel.INFO
+static var log_level := ggpio.LogLevel.INFO
 
 static func _log(s:String, level :LogLevel) -> void:
 	if level < log_level:
@@ -94,15 +94,15 @@ static func Init(with_reset = false, env :Dictionary[String, String] = {}) -> vo
 	so as to reset it to its default state.
 	'''
 	CheckRGSBinary()
-	var lib_version :String = lgpio.Run(['-v'], env)[1]
-	print('Godot-LGPIO: using rgs %s'%[lib_version,])
+	var lib_version :String = ggpio.Run(['-v'], env)[1]
+	print('GGPIO: using rgs %s'%[lib_version,])
 	if with_reset:
 		OS.execute('rgs', ['GC', DEFAULT_SHARE_ID], [], true, false)
 
 static func CheckRGSBinary() -> void:
 	if OS.execute('rgs', [], [], true, false) != 0:
-		lgpio._log('PATH: %s'%OS.get_environment('PATH'), lgpio.LogLevel.DEBUG)
-		lgpio._log('rgs binary not found! Godot-lgpio will NOT work.', lgpio.LogLevel.ERROR)
+		ggpio._log('PATH: %s'%OS.get_environment('PATH'), ggpio.LogLevel.DEBUG)
+		ggpio._log('rgs binary not found! ggpio will NOT work.', ggpio.LogLevel.ERROR)
 
 const ErrorCodes = {
 	255: 'RGS_CONNECT_ERR',
@@ -122,14 +122,14 @@ static func Run(
 	var rcode := OS.execute('rgs', cmd, output, true, false)
 	var err := OK if rcode == 0 else FAILED
 	if err != OK:
-		lgpio._log(
+		ggpio._log(
 			'Error running command "%s" (rcode %s/%s): %s'%[
 				cmd,
 				rcode,
-				lgpio.ErrorCodes.get(rcode, ''),
+				ggpio.ErrorCodes.get(rcode, ''),
 				output.back() if output.size()>1 else '<empty stderr>'
 			],
-			lgpio.LogLevel.WARNING
+			ggpio.LogLevel.WARNING
 		)
 	return [err, output[0].strip_edges()]
 ###################### PIGPIO
@@ -138,7 +138,7 @@ static func Run(
 ## GPIO not 0-53
 #const BAD_GPIO := -3
 #
-## https://github.com/joan2937/lgpio/blob/c33738a320a3e28824af7807edafda440952c05d/lgpio.py#L358
+## https://github.com/joan2937/lgpio/blob/c33738a320a3e28824af7807edafda440952c05d/ggpio.py#L358
 #enum Mode {
 	#INPUT=0, READ=0,
 	#OUTPUT=1, WRITE=1,
@@ -153,7 +153,7 @@ static func Run(
 #}
 #
 #
-## https://github.com/joan2937/lgpio/blob/c33738a320a3e28824af7807edafda440952c05d/lgpio.py#L369
+## https://github.com/joan2937/lgpio/blob/c33738a320a3e28824af7807edafda440952c05d/ggpio.py#L369
 #enum PUD {
 	#OFF = 0,
 	#DOWN = 1,

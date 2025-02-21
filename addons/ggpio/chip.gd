@@ -1,21 +1,21 @@
 extends RefCounted
 
 # rgpio share
-var share_id :int = lgpio.DEFAULT_SHARE_ID
+var share_id :int = ggpio.DEFAULT_SHARE_ID
 # /dev/gciochip%s
 var id :int = 0
 var id_string: String:
 	get: return String.num_int64(id)
 
 var _env :Dictionary[String, String] = {
-	LG_ADDR=lgpio.DEFAULT_LG_ADDR,
-	LG_PORT=String.num_int64(lgpio.DEFAULT_LG_PORT),
+	LG_ADDR=ggpio.DEFAULT_LG_ADDR,
+	LG_PORT=String.num_int64(ggpio.DEFAULT_LG_PORT),
 }
 
 func _init(gpiochip_id :int) -> void:
 	id = gpiochip_id
 
-func set_remote(addr :String, port :int = lgpio.DEFAULT_LG_PORT) -> void:
+func set_remote(addr :String, port :int = ggpio.DEFAULT_LG_PORT) -> void:
 	_env['LG_ADDR'] = addr
 	_env['LG_PORT'] = String.num_int64(port)
 
@@ -28,22 +28,22 @@ func run(cmd :Array[String], shared:=true) -> Array:
 		full_cmd.append('c')
 		full_cmd.append(String.num_int64(share_id))
 	full_cmd.append_array(cmd)
-	return lgpio.Run(full_cmd, _env)
+	return ggpio.Run(full_cmd, _env)
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		if self != null:
-			lgpio._log('Freeing Chip(%s)'%id, lgpio.LogLevel.DEBUG)
+			ggpio._log('Freeing Chip(%s)'%id, ggpio.LogLevel.DEBUG)
 			GC()
 
 func gpio(
 	gpio :int,
 	output := true,
-	line_flag := lgpio.LineFlag.ACTIVE_LOW,
-	level := lgpio.Level.LOW
-) -> lgpio.GPIO:
+	line_flag := ggpio.LineFlag.ACTIVE_LOW,
+	level := ggpio.Level.LOW
+) -> ggpio.GPIO:
 	assert(false) # needs review
-	var pin := lgpio.GPIO.new(gpio, self)
+	var pin := ggpio.GPIO.new(gpio, self)
 	if output:
 		pin.GSOX(line_flag, level)
 	else:
@@ -100,7 +100,7 @@ func GSGO(pin_ids: Array[int]) -> void:
 	return _GSGx('GSGO', pin_ids)
 func _GSGx(cmd :String, pin_ids: Array[int]) -> void:
 	if pin_ids.is_empty():
-		lgpio._log('%s on %s: list of gpios is empty'%[cmd, id], lgpio.LogLevel.WARNING)
+		ggpio._log('%s on %s: list of gpios is empty'%[cmd, id], ggpio.LogLevel.WARNING)
 		return
 	var args :Array[String] = [cmd, id_string]
 	args.append_array(
@@ -108,7 +108,7 @@ func _GSGx(cmd :String, pin_ids: Array[int]) -> void:
 	)
 	run(args)
 
-func GSGIX(line_flag :lgpio.LineFlag, pin_ids: Array[int]) -> void:
+func GSGIX(line_flag :ggpio.LineFlag, pin_ids: Array[int]) -> void:
 	'''
 	Claims a group of GPIO for inputs. All the GPIO share the same line flag setting.
 	The line flags may be used to set the GPIO as active low, open drain, open source,
@@ -117,7 +117,7 @@ func GSGIX(line_flag :lgpio.LineFlag, pin_ids: Array[int]) -> void:
 	The first GPIO in the list is called the group leader and is used to reference the group as a whole
 	'''
 	if pin_ids.is_empty():
-		lgpio._log('%s on %s: list of gpios is empty'%['GSGIX', id], lgpio.LogLevel.WARNING)
+		ggpio._log('%s on %s: list of gpios is empty'%['GSGIX', id], ggpio.LogLevel.WARNING)
 		return
 	var args :Array[String] = ['GSGIX', id_string, String.num_int64(line_flag)]
 	args.append_array(
@@ -125,21 +125,21 @@ func GSGIX(line_flag :lgpio.LineFlag, pin_ids: Array[int]) -> void:
 	)
 	run(args)
 
-func GSGOX(line_flag :lgpio.LineFlag, pin_ids: Array[int], lowhighs :Array[int]) -> void:
+func GSGOX(line_flag :ggpio.LineFlag, pin_ids: Array[int], lowhighs :Array[int]) -> void:
 	'''
 	Claims a group of GPIO for outputs. All the GPIO and share the same line flag setting.
 	The line flags may be used to set the GPIO as active low, open drain, open source, pull up,
 	pull down, pull off.
 
 	The first GPIO in the list is called the group leader and is used to reference the group as a whole.
-	lowhighs is a list of initialisation values for the GPIO. If a value is lgpio.LOW the corresponding
+	lowhighs is a list of initialisation values for the GPIO. If a value is ggpio.LOW the corresponding
 	GPIO will be initialised low. If any other value is used the corresponding GPIO will be initialised high.
 	'''
 	if pin_ids.is_empty():
-		lgpio._log('GSGOX on %s: list of gpios is empty'%[id], lgpio.LogLevel.WARNING)
+		ggpio._log('GSGOX on %s: list of gpios is empty'%[id], ggpio.LogLevel.WARNING)
 		return
 	if pin_ids.size() != lowhighs.size():
-		lgpio._log('GSGOX on %s: shape mismatch between pin_ids and highlows'%[id], lgpio.LogLevel.WARNING)
+		ggpio._log('GSGOX on %s: shape mismatch between pin_ids and highlows'%[id], ggpio.LogLevel.WARNING)
 		return
 	var args :Array[String] = ['GSGOX', id_string, String.num_int64(line_flag)]
 	args.append_array(
@@ -150,12 +150,12 @@ func GSGOX(line_flag :lgpio.LineFlag, pin_ids: Array[int], lowhighs :Array[int])
 	)
 	run(args)
 
-func GSGF(cmd :String, line_flag :lgpio.LineFlag, pin_ids: Array[int]) -> void:
+func GSGF(cmd :String, line_flag :ggpio.LineFlag, pin_ids: Array[int]) -> void:
 	'''
 
 	'''
 	if pin_ids.is_empty():
-		lgpio._log('%s on %s: list of gpios is empty'%[cmd, id], lgpio.LogLevel.WARNING)
+		ggpio._log('%s on %s: list of gpios is empty'%[cmd, id], ggpio.LogLevel.WARNING)
 		return
 	var args :Array[String] = [cmd, id_string, String.num_int64(line_flag)]
 	args.append_array(

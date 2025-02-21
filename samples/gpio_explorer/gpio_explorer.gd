@@ -12,20 +12,20 @@ extends Control
 @onready var pinout_grid: GridContainer = %'pinout-grid'
 #endregion
 
-var chip :lgpio.Chip
+var chip :ggpio.Chip
 
 var env :Dictionary[String, String] = {
 	LG_ADDR='goshrimp.local',
-	LG_PORT=String.num_int64(lgpio.DEFAULT_LG_PORT),
+	LG_PORT=String.num_int64(ggpio.DEFAULT_LG_PORT),
 }
 
 func _ready() -> void:
-	get_window().title = 'Godot-LGPIO -- GPIO Explorer'
-	lgpio.log_level = lgpio.LogLevel.DEBUG
+	get_window().title = 'GGPIO -- GPIO Explorer'
+	ggpio.log_level = ggpio.LogLevel.DEBUG
 	OS.set_environment('LG_ADDR', 'goshrimp.local')
-	lgpio.Init(true)
+	ggpio.Init(true)
 
-	chip = lgpio.Chip.new(0)
+	chip = ggpio.Chip.new(0)
 	chip.set_remote('goshrimp.local')
 	refresh_gpio_btn.pressed.connect(_request_refresh_gpiochips)
 	gpio_picker.item_selected.connect(_on_gpio_picker_item_selected)
@@ -42,9 +42,9 @@ func _request_refresh_gpiochips() -> void:
 
 func refresh_gpiochips() -> void:
 	const gpiochip_pattern := '/dev/gpiochip'
-	var res := lgpio.Run(['FL', '-a', gpiochip_pattern+'*', '5000'], env)
+	var res := ggpio.Run(['FL', '-a', gpiochip_pattern+'*', '5000'], env)
 	if res[0] != OK:
-		return lgpio._log(res[1], lgpio.LogLevel.ERROR)
+		return ggpio._log(res[1], ggpio.LogLevel.ERROR)
 	var res1 := res[1] as String
 	var buffer := res1.substr(res1.find(' ')+1)
 
@@ -62,7 +62,7 @@ func refresh_gpiochips() -> void:
 func _on_gpio_picker_item_selected(index :int)-> void:
 	# create chip
 	var chip_id :String = gpio_picker.get_item_metadata(gpio_picker.get_item_id(index))
-	chip = lgpio.Chip.new(int(chip_id))
+	chip = ggpio.Chip.new(int(chip_id))
 	chip.set_remote(env['LG_ADDR'], int(env['LG_PORT']))
 	# get chip info
 	var chip_info := chip.GIC()
@@ -70,10 +70,10 @@ func _on_gpio_picker_item_selected(index :int)-> void:
 	chip_name_value.text = chip_info.name
 	chip_usage_value.text = chip_info.usage
 	# get line info in a single batched command
-	var pins :Dictionary[int, lgpio.GPIO] = {}
+	var pins :Dictionary[int, ggpio.GPIO] = {}
 	var GILcommand := PackedStringArray()
 	for line_id :int in chip_info.gpio_count:
-		pins[line_id] = lgpio.GPIO.new(line_id, chip)
+		pins[line_id] = ggpio.GPIO.new(line_id, chip)
 		GILcommand.append_array(['GIL', chip_id, line_id])
 	var res :Array = chip.run(GILcommand)
 	if res[0] != OK:
@@ -81,7 +81,7 @@ func _on_gpio_picker_item_selected(index :int)-> void:
 	var lines := (res[1] as String).split('\n')
 
 	for line_id :int in chip_info.gpio_count:
-		var gil := lgpio.GPIO.GILResult.Parse(lines[line_id])
+		var gil := ggpio.GPIO.GILResult.Parse(lines[line_id])
 		var pin_control :PinControl = preload('pin_control.tscn').instantiate()
 		pin_control.gil = gil
 		pin_control.gpio = pins[line_id]

@@ -2,26 +2,26 @@ extends RefCounted
 
 # GPIO id (not pin number)
 var id :int
-var chip :lgpio.Chip
+var chip :ggpio.Chip
 
 var id_string: String:
 	get: return String.num_int64(id)
 
-func _init(id :int, chip :lgpio.Chip) -> void:
+func _init(id :int, chip :ggpio.Chip) -> void:
 	self.id = id
 	self.chip = chip
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		if self != null:
-			lgpio._log('freeing GPIO(%s)'%id, lgpio.LogLevel.DEBUG)
+			ggpio._log('freeing GPIO(%s)'%id, ggpio.LogLevel.DEBUG)
 			GSF()
 
 class GILResult extends RefCounted:
 	var raw :String
 
 	var gpio_id :int
-	var line_flags :lgpio.LineFlag
+	var line_flags :ggpio.LineFlag
 	var user :String
 	var purpose :String
 
@@ -56,7 +56,7 @@ func GIL() -> GILResult:
 	'''
 	var res := chip.run(['gil', chip.id_string, id_string])
 	if res[0] != OK:
-		lgpio._log('GIL errored: %s'%res[1], lgpio.LogLevel.ERROR)
+		ggpio._log('GIL errored: %s'%res[1], ggpio.LogLevel.ERROR)
 		var ret := GILResult.new()
 		ret.gpio_id = -1
 		ret.user = 'error'
@@ -69,19 +69,19 @@ func GMODE() -> int:
 	'''
 	var res := chip.run(['gmode', chip.id_string, id_string])
 	if res[0] != OK:
-		lgpio._log('GMODE errored: %s'%res[1], lgpio.LogLevel.ERROR)
+		ggpio._log('GMODE errored: %s'%res[1], ggpio.LogLevel.ERROR)
 	# TODO split this result in an array of GILResult{GPIO id, line flags, user, purpose}
 	return int((res[1] as String).strip_edges())
 
 func GSI() -> void:
 	'''claims GPIO g for input'''
 	return chip.run(['GSI', chip.id_string, id_string])
-func GSIX(line_flag := lgpio.LineFlag.ACTIVE_LOW) -> void:
+func GSIX(line_flag := ggpio.LineFlag.ACTIVE_LOW) -> void:
 	return chip.run(['GSIX', chip.id_string, String.num_int64(line_flag), id_string])
 
 func GSO(pin_id: int) -> void:
 	return chip.run(['GSO', chip.id_string, id_string])
-func GSOX(line_flag :lgpio.LineFlag, value: lgpio.Level) -> void:
+func GSOX(line_flag :ggpio.LineFlag, value: ggpio.Level) -> void:
 	'''
 	Claims GPIO g for output.
 	The line flags lf may be used to set the GPIO as active low, open drain, open source,

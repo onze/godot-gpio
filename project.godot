@@ -10,11 +10,11 @@ config_version=5
 
 [application]
 
-config/name="lgpio-example"
+config/name="ggpio"
 run/main_scene="uid://chtd0486tkej4"
 config/features=PackedStringArray("4.4", "Forward Plus")
 run/max_fps=12
-config/icon="uid://b2ye03ys7k2jb"
+config/icon="res://ggpio.png"
 
 [audio]
 

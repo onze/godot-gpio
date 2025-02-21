@@ -1,30 +1,37 @@
 <p align="center">
-  <img src="godot-lgpio.png" alt="logo"/>
+  <img src="ggpio.png" alt="logo"/>
 </p>
 
-# Godot - LGPIO
-[Godot](https://godotengine.org/)/GDScript client for [lgpio](https://abyz.me.uk/lg/index.html) - Makes it easier to interact with GPIO on your Raspberry Pi or other SBC.
+# Godot-GPIO
+A [Godot](https://godotengine.org/)/GDScript addon to access GPIO on linux hosts (Raspberry Pi, Arduino, etc).
 
 [!["Buy Me A Coffee"](https://buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/valbisson)
 
 # Setup
-1. install `rgpiod` on the computer you want to control (eg Raspberri Pi).
-2. run it: `sudo rgpiod`
-3. on your host (where the Godot-lgpio will be running, possibly the same host,
+`Godot-GPIO` (`ggpio`) depends on [lgpio](https://abyz.me.uk/lg/index.html):
+1. [install](#requirements) `rgpiod` on the computer you want to control (eg Raspberri Pi).
+2. run it: `sudo rgpiod` (or start it as a deamon: `sudo nohup rgpiod`
+3. on your host (where the `ggpio` will be running, possibly the same host,
 depending on you situation) [install](#requirements) `rgs`
-4. you're ready to use the app!
 
 # Requirements
 - on Raspberri Pi: `sudo apt-get install rgpio-tools`
-- others: download/compile `rgs` using [lgpio's install info](https://abyz.me.uk/lg/download.html)
+- others: download & compile `rgs` using [lgpio's install info](https://abyz.me.uk/lg/download.html):
+	```bash
+	wget http://abyz.me.uk/lg/lg.zip
+	unzip lg.zip
+	cd lg
+	make
+	sudo make install
+	```
 
 # Introduction
 Here's a quick rundown of the main classes:
-- `lgpio`: `class_name`'d to make it globally available, it can be considered a
+- `ggpio`: `class_name`'d to make it globally available, it can be considered a
 namespace for the project, so that no other gd script needs to be imported in most cases.
-- `lgpio.Chip`: refers to a gpiochip under [the kernel's GPIO driver interface](https://docs.kernel.org/driver-api/gpio/driver.html).
+- `ggpio.Chip`: refers to a gpiochip under [the kernel's GPIO driver interface](https://docs.kernel.org/driver-api/gpio/driver.html).
 It basically means a board (eg 1 Pi).
-- `lgpio.GPIO`: this is a single pin on a board. GPIOs on a PI are numbererd
+- `ggpio.GPIO`: this is a single pin on a board. GPIOs on a PI are numbererd
 [as such](https://pinout.xyz/):
 <p align="center">
   <img src="misc/rpi_pinout.png" alt="RPi pinout"/>
@@ -32,8 +39,9 @@ It basically means a board (eg 1 Pi).
 
 # Usage
 Check out scenes in the [samples](./samples) directory. Couple points:
-	- Each scene can be played independently (`F6`)
-	- the main scene is a GPIO explorer, kind of a live version of the pinout above,
+
+- Each scene can be played independently (`F6`)
+- the main scene is GPIO explorer, kind of a live version of the pinout above,
 but dedicated to GPIO:
 <p align="center">
   <img src="misc/gpio_explorer.png" alt="GPIO Explorer"/>
@@ -41,7 +49,7 @@ but dedicated to GPIO:
 
 
 Note:
-- by default, `Godot-lgpio` connects to `localhost`, ie it access GPIOs of the board
+- by default, `ggpio` connects to `localhost`, ie it access GPIOs of the board
 it runs on.
 - set `LG_ENVADDR` & `LG_ENVPORT` to work remotely and access GPIOS of the board
 at those address & port.
@@ -49,7 +57,7 @@ at those address & port.
 
 # Facilities
 ## Devices
-LGPIO implements a few abstractions similar to [gpiozero](https://gpiozero.readthedocs.io/en/latest/api_output.html#base-classes)
+GGPIO implements a few abstractions similar to [gpiozero](https://gpiozero.readthedocs.io/en/latest/api_output.html#base-classes)
 (this is very much a work-in-progress).
 
 Legend:
@@ -93,7 +101,7 @@ flowchart RL
 ```
 
 ## Logging
-`Godot-LGPIO` logs under 4 levels:
+`Godot-GPIO` logs under 4 levels:
 
 - `DEBUG`: Logs most events and gives a verbose overview of what's happening in the lib.
 - `INFO`: Default level.
