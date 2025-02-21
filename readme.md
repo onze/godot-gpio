@@ -32,15 +32,17 @@ namespace for the project, so that no other gd script needs to be imported in mo
 - `ggpio.SBC`: (Single Board Computer). That's the host we'll be interacting with.
 - `ggpio.Chip`: refers to a gpiochip under [the kernel's GPIO driver interface](https://docs.kernel.org/driver-api/gpio/driver.html).
 Most of the time we're workin with gpio `0`.
-- `ggpio.GPIO`: this is a single pin on a board. GPIOs on a Pi are numbererd
-[as such](https://pinout.xyz/):
+- `ggpio.GPIO`: this is a single pin on a board. 
+<details><summary>Here's how GPIOs on a Pi are numbered (<a href="https://pinout.xyz/">source</a>):</summary>
 <p align="center">
   <img src="misc/rpi_pinout.png" alt="RPi pinout"/>
 </p>
+<b>Note</b> that some pins in the diagram above are not GPIO, and as such, won't be visible in the lib. 
+Reversely, depending on the SBC, some devices may appears as GPIO while not being mentioned in the diagram above.
+</details>
 
-**Note** that some pins in the diagram above are not GPIO, and as such, won't be visible in the lib. Reversely, depending on the SBC,
-some devices may appears as GPIO while not being mentioned in the diagram above.
-- `ggpio.lg` this is where the low level `lg`/`rpio` interface is implemented. The flow is to create an `LGCommand` and `run` it on an `SBC`.
+- `ggpio.devices.*`: those are high level facilities to help development. See [#facilities](#facilities) for details.
+- `ggpio.lg`: this is where the low level `lg`/`rpio` interface is implemented. The flow is to create an `LGCommand` and `run` it on an `SBC`. This is for more advanced use.
 
 # Usage
 In a nutshell:
@@ -92,10 +94,10 @@ contributions are welcome!)
 flowchart RL
 	Device[Device ✖]
 	class Device abstract
-	GPIODevice[GPIODevice ✔] --> Device
+	GPIODevice[GPIODevice ✖] --> Device
 	class GPIODevice abstract
 	RGBLED[RGBLED ✖] --> Device
-	CompositeDevice[CompositeDevice ✔] --> Device
+	CompositeDevice[CompositeDevice ✖] --> Device
 	class CompositeDevice abstract
 
 	OutputDevice[OutputDevice ✔] --> GPIODevice
@@ -131,8 +133,14 @@ flowchart RL
 
 # WIP Status
 Not all of `rgs` API is implemented (but still available as raw commands). This is a work in progress
-where contributions are welcome. In addition to the high-level classes described above, here's a table
- to track which which parts of [rgs API](https://abyz.me.uk/lg/rgs.html) are supported:
+where contributions are welcome. 
+
+<details>
+<summary>
+In addition to the high-level classes described above, here's a table
+to track which which parts of [rgs API](https://abyz.me.uk/lg/rgs.html) are supported:
+</summary>
+
 
 | Command | Supported |
 | :-------| :-------: |
@@ -242,6 +250,8 @@ where contributions are welcome. In addition to the high-level classes described
 | LCFG    | ✖         |
 | PCD     | ✖         |
 | PWD     | ✖         |
+</details>
+
 
 ## FAQ
 
@@ -259,8 +269,12 @@ Until then, this is a quick[1] and dirty way to get Godot to play with the Pi.
 - moved all `lg` commands into the `ggpio.lg` namespace
 - added `SBC` class, refactored `Chip` & `GPIO` into an object oriented API
 
+<details>
+<summary>Previous entries</summary>
+
 ### 0.2
 - ggpio explorer and fixes
 
 ### 0.1
 - first working version
+</details>
