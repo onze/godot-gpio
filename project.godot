@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="lgpio-example"
-run/main_scene="uid://b8g5banofgqms"
+run/main_scene="uid://chtd0486tkej4"
 config/features=PackedStringArray("4.4", "Forward Plus")
 run/max_fps=12
 config/icon="res://icon.svg"
@@ -22,7 +22,8 @@ driver/driver="Dummy"
 
 [display]
 
-display_server/driver="headless"
+window/size/viewport_height=864
+window/size/initial_position_type=2
 
 [editor]
 

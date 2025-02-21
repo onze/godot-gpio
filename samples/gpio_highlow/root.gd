@@ -1,6 +1,7 @@
 extends Node
 '''
 This script turns GPIO 27 on and off alternatively.
+It's better run locally to the pi and with the --headless godot flag.
 '''
 
 var t :float = .0
