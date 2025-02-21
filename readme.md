@@ -8,7 +8,7 @@ A [Godot](https://godotengine.org/)/GDScript addon to access GPIO on linux hosts
 [!["Buy Me A Coffee"](https://buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/valbisson)
 
 # Setup
-`Godot-GPIO` (`ggpio`) depends on [lgpio](https://abyz.me.uk/lg/index.html):
+`Godot-GPIO` (`ggpio`) depends on [lg](https://abyz.me.uk/lg/index.html):
 1. [install](#requirements) `rgpiod` on the computer you want to control (eg Raspberri Pi).
 2. run it: `sudo rgpiod` (or start it as a deamon: `sudo nohup rgpiod`
 3. on your host (where the `ggpio` will be running, possibly the same host,
@@ -16,7 +16,7 @@ depending on you situation) [install](#requirements) `rgs`
 
 # Requirements
 - on Raspberri Pi: `sudo apt-get install rgpio-tools`
-- others: download & compile `rgs` using [lgpio's install info](https://abyz.me.uk/lg/download.html):
+- others: download & compile `rgs` using [`lg`'s install info](https://abyz.me.uk/lg/download.html):
 	```bash
 	wget http://abyz.me.uk/lg/lg.zip
 	unzip lg.zip
@@ -38,7 +38,7 @@ Most of the time we're workin with gpio `0`.
   <img src="misc/rpi_pinout.png" alt="RPi pinout"/>
 </p>
 
-**Note** that some pins in the diagram above are not GPIO, and as such, won't be visible in the lib. Reversely, depending on the SBC, 
+**Note** that some pins in the diagram above are not GPIO, and as such, won't be visible in the lib. Reversely, depending on the SBC,
 some devices may appears as GPIO while not being mentioned in the diagram above.
 - `ggpio.lg` this is where the low level `lg`/`rpio` interface is implemented. The flow is to create an `LGCommand` and `run` it on an `SBC`.
 
@@ -112,21 +112,25 @@ flowchart RL
 - `DEBUG`: Logs most events and gives a verbose overview of what's happening in the lib.
 - `INFO`: Default level.
 - `WARNING`: for local errors detected within this lib.
-- `ERROR`: when the underlying stack (rgs/lgpio) returns errors.
+- `ERROR`: when the underlying stack (rgs/lg) returns errors.
 
 # WIP Status
-Not all of `lgpio` API is implemented. This is a work in progress where PRs are
-welcome. In addition to the high-level classes described above, here's a table to
-track which which parts of [rgs API](https://abyz.me.uk/lg/rgs.html) are supported:
+Not all of `rgs` API is implemented (but still available as raw commands). This is a work in progress
+where contributions are welcome. In addition to the high-level classes described above, here's a table
+ to track which which parts of [rgs API](https://abyz.me.uk/lg/rgs.html) are supported:
 
 | Command | Supported |
 | :-------| :-------: |
+| LEGEND  | --------- |
+| CMD     | ✖         | <- `CMD` supported as raw command only
+| CMD     | ✔        | <- `CMD` is supported in high-level objects
+| CMD     | ?        | <- there's no current plan to support `CMD`
 | FILES   | --------- |
-| FO      | ✖         |
-| FC      | ✖         |
-| FR      | ✖         |
-| FW      | ✖         |
-| FS      | ✖         |
+| FO      | ?         |
+| FC      | ?         |
+| FR      | ?         |
+| FW      | ?         |
+| FS      | ?         |
 | FL      | ✔        |
 | GPIO    | --------- |
 | GO      | ✔         |
@@ -141,10 +145,10 @@ track which which parts of [rgs API](https://abyz.me.uk/lg/rgs.html) are support
 | GSA     | ✖         |
 | GSAX    | ✖         |
 | GSF     | ✔        |
-| GSGI    | ✖        |
-| GSGIX   | ✖        |
-| GSGO    | ✖        |
-| GSGOX   | ✖        |
+| GSGI    | ?        |
+| GSGIX   | ?        |
+| GSGO    | ?        |
+| GSGOX   | ?        |
 | GSGF    | ✖        |
 | GR      | ✔        |
 | GW      | ✔        |
@@ -219,7 +223,7 @@ track which which parts of [rgs API](https://abyz.me.uk/lg/rgs.html) are support
 | MICS    | ✖         |
 | MILS    | ✖         |
 | U/USER  | ✖         |
-| C/SHARE | ✔ (Chip._share_id) |
+| C/SHARE | ✔ (Chip.share_id) |
 | LCFG    | ✖         |
 | PCD     | ✖         |
 | PWD     | ✖         |
