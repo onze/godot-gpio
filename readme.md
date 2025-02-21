@@ -1,5 +1,9 @@
+<p align="center">
+  <img src="godot-lgpio.png" alt="logo"/>
+</p>
+
 # Godot - LGPIO
-GDScript client for [lgpio](https://abyz.me.uk/lg/index.html) - Makes it easier to interact with GPIO on your Raspberry Pi or other SBC.
+[Godot](https://godotengine.org/)/GDScript client for [lgpio](https://abyz.me.uk/lg/index.html) - Makes it easier to interact with GPIO on your Raspberry Pi or other SBC.
 
 [!["Buy Me A Coffee"](https://buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/valbisson)
 

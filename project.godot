@@ -14,7 +14,7 @@ config/name="lgpio-example"
 run/main_scene="uid://chtd0486tkej4"
 config/features=PackedStringArray("4.4", "Forward Plus")
 run/max_fps=12
-config/icon="res://icon.svg"
+config/icon="uid://b2ye03ys7k2jb"
 
 [audio]
 
