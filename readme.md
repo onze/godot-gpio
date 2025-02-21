@@ -48,10 +48,10 @@ Reversely, depending on the SBC, some devices may appears as GPIO while not bein
 # Usage
 In a nutshell:
 ```gdscript
+# turn on LED on gpio 27 using the gpio itself
 var sbc_hostname := 'rpi.local'
 var sbc := ggpio.SBC.new(sbc_hostname)
-var chip := sbc.open_chip('0')
-gpio27 = chip.open_gpio(
+gpio27 = sbc.open_chip().open_gpio(
 	27,
 	ggpio.Mode.OUTPUT,
 	ggpio.LineFlag.PULL_DOWN,
