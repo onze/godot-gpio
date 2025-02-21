@@ -64,7 +64,7 @@ func _continue_populating_gpiochips() -> void:
 	const gpiochip_pattern := '/dev/gpiochip'
 	var res := ggpio.Run(['FL', '-a', gpiochip_pattern+'*', '5000'], env)
 	if res[0] != OK:
-		return ggpio._log(res[1], ggpio.LogLevel.ERROR)
+		return ggpio.log(res[1], ggpio.LogLevel.ERROR)
 	var res1 := res[1] as String
 	var buffer := res1.substr(res1.find(' ')+1)
 

@@ -77,7 +77,7 @@ enum LogLevel {
 }
 static var log_level := ggpio.LogLevel.INFO
 
-static func _log(s:String, level :LogLevel) -> void:
+static func log(s:String, level :LogLevel) -> void:
 	if level < log_level:
 		return
 	var prefix := ''
@@ -98,16 +98,16 @@ static func Init(
 	with_reset: will close the default GPIO,
 	so as to reset it to its default state.
 	'''
-	CheckRGSBinary()
+	_CheckRGSBinary()
 	var lib_version :String = ggpio.Run(['-v'], env)[1]
 	print('GGPIO: using rgs %s'%[lib_version,])
 	if with_reset:
 		OS.execute('rgs', ['GC', DEFAULT_SHARE_ID], [], true, false)
 
-static func CheckRGSBinary() -> void:
+static func _CheckRGSBinary() -> void:
 	if OS.execute('rgs', [], [], true, false) != 0:
-		ggpio._log('PATH: %s'%OS.get_environment('PATH'), ggpio.LogLevel.DEBUG)
-		ggpio._log('rgs binary not found! ggpio will NOT work.', ggpio.LogLevel.ERROR)
+		ggpio.log('PATH: %s'%OS.get_environment('PATH'), ggpio.LogLevel.DEBUG)
+		ggpio.log('rgs binary not found! ggpio will NOT work.', ggpio.LogLevel.ERROR)
 
 const ErrorCodes = {
 	255: 'RGS_CONNECT_ERR',
@@ -125,11 +125,11 @@ static func Run(
 	for k in env:
 		OS.set_environment(k, env[k])
 	var output :Array[String] = []
-	ggpio._log('[CMD] %s'%[' '.join(cmd)], ggpio.LogLevel.VERBOSE)
+	ggpio.log('[CMD] %s'%[' '.join(cmd)], ggpio.LogLevel.VERBOSE)
 	var rcode := OS.execute('rgs', cmd, output, true, false)
 	var err := OK if rcode == 0 else FAILED
 	if err != OK:
-		ggpio._log(
+		ggpio.log(
 			'Error running command "%s" (rcode %s/%s): %s'%[
 				cmd,
 				rcode,
@@ -139,32 +139,3 @@ static func Run(
 			ggpio.LogLevel.WARNING
 		)
 	return [err, output[0].strip_edges()]
-###################### PIGPIO
-## GPIO not 0-31
-#const BAD_USER_GPIO := -2
-## GPIO not 0-53
-#const BAD_GPIO := -3
-#
-## https://github.com/joan2937/lgpio/blob/c33738a320a3e28824af7807edafda440952c05d/ggpio.py#L358
-#enum Mode {
-	#INPUT=0, READ=0,
-	#OUTPUT=1, WRITE=1,
-	#ALT0=4,
-	#ALT1=5,
-	#ALT2=6,
-	#ALT3=7,
-	#ALT4=3,
-	#ALT5=2,
-	## mode not 0-7
-	#BAD_MODE=-4,
-#}
-#
-#
-## https://github.com/joan2937/lgpio/blob/c33738a320a3e28824af7807edafda440952c05d/ggpio.py#L369
-#enum PUD {
-	#OFF = 0,
-	#DOWN = 1,
-	#UP = 2,
-	## error mode
-	#BAD_PUD = -6
-#}

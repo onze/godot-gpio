@@ -34,7 +34,7 @@ func run(cmd :Array[String], shared:=true) -> Array:
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		if self != null:
-			ggpio._log('Freeing Chip(%s)'%id, ggpio.LogLevel.DEBUG)
+			ggpio.log('Freeing Chip(%s)'%id, ggpio.LogLevel.DEBUG)
 			GC()
 
 func gpio(
@@ -101,7 +101,7 @@ func GSGO(pin_ids: Array[int]) -> void:
 	return _GSGx('GSGO', pin_ids)
 func _GSGx(cmd :String, pin_ids: Array[int]) -> void:
 	if pin_ids.is_empty():
-		ggpio._log('%s on %s: list of gpios is empty'%[cmd, id], ggpio.LogLevel.WARNING)
+		ggpio.log('%s on %s: list of gpios is empty'%[cmd, id], ggpio.LogLevel.WARNING)
 		return
 	var args :Array[String] = [cmd, id_string]
 	args.append_array(
@@ -118,7 +118,7 @@ func GSGIX(line_flag :ggpio.LineFlag, pin_ids: Array[int]) -> void:
 	The first GPIO in the list is called the group leader and is used to reference the group as a whole
 	'''
 	if pin_ids.is_empty():
-		ggpio._log('%s on %s: list of gpios is empty'%['GSGIX', id], ggpio.LogLevel.WARNING)
+		ggpio.log('%s on %s: list of gpios is empty'%['GSGIX', id], ggpio.LogLevel.WARNING)
 		return
 	var args :Array[String] = ['GSGIX', id_string, String.num_int64(line_flag)]
 	args.append_array(
@@ -137,10 +137,10 @@ func GSGOX(line_flag :ggpio.LineFlag, pin_ids: Array[int], lowhighs :Array[int])
 	GPIO will be initialised low. If any other value is used the corresponding GPIO will be initialised high.
 	'''
 	if pin_ids.is_empty():
-		ggpio._log('GSGOX on %s: list of gpios is empty'%[id], ggpio.LogLevel.WARNING)
+		ggpio.log('GSGOX on %s: list of gpios is empty'%[id], ggpio.LogLevel.WARNING)
 		return
 	if pin_ids.size() != lowhighs.size():
-		ggpio._log('GSGOX on %s: shape mismatch between pin_ids and highlows'%[id], ggpio.LogLevel.WARNING)
+		ggpio.log('GSGOX on %s: shape mismatch between pin_ids and highlows'%[id], ggpio.LogLevel.WARNING)
 		return
 	var args :Array[String] = ['GSGOX', id_string, String.num_int64(line_flag)]
 	args.append_array(
@@ -156,7 +156,7 @@ func GSGF(cmd :String, line_flag :ggpio.LineFlag, pin_ids: Array[int]) -> void:
 
 	'''
 	if pin_ids.is_empty():
-		ggpio._log('%s on %s: list of gpios is empty'%[cmd, id], ggpio.LogLevel.WARNING)
+		ggpio.log('%s on %s: list of gpios is empty'%[cmd, id], ggpio.LogLevel.WARNING)
 		return
 	var args :Array[String] = [cmd, id_string, String.num_int64(line_flag)]
 	args.append_array(

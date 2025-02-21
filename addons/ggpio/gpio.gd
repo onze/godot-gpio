@@ -14,7 +14,7 @@ func _init(id :int, chip :ggpio.Chip) -> void:
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		if self != null:
-			ggpio._log('freeing GPIO(%s)'%id, ggpio.LogLevel.DEBUG)
+			ggpio.log('freeing GPIO(%s)'%id, ggpio.LogLevel.DEBUG)
 			GSF()
 
 class GILResult extends RefCounted:
@@ -56,7 +56,7 @@ func GIL() -> GILResult:
 	'''
 	var res := chip.run(['gil', chip.id_string, id_string])
 	if res[0] != OK:
-		ggpio._log('GIL errored: %s'%res[1], ggpio.LogLevel.ERROR)
+		ggpio.log('GIL errored: %s'%res[1], ggpio.LogLevel.ERROR)
 		var ret := GILResult.new()
 		ret.gpio_id = -1
 		ret.user = 'error'
@@ -69,7 +69,7 @@ func GMODE() -> int:
 	'''
 	var res := chip.run(['gmode', chip.id_string, id_string])
 	if res[0] != OK:
-		ggpio._log('GMODE errored: %s'%res[1], ggpio.LogLevel.ERROR)
+		ggpio.log('GMODE errored: %s'%res[1], ggpio.LogLevel.ERROR)
 	# TODO split this result in an array of GILResult{GPIO id, line flags, user, purpose}
 	return int((res[1] as String).strip_edges())
 

@@ -1,1 +1,1 @@
-const PhaseEnabledMotor = preload('phase_enabled_motor.gd')
+const PhaseEnableMotor = preload('phase_enable_motor.gd')
