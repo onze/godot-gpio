@@ -9,15 +9,15 @@ var id_string: String:
 
 var _env :Dictionary[String, String] = {
 	LG_ADDR=ggpio.DEFAULT_LG_ADDR,
-	LG_PORT=String.num_int64(ggpio.DEFAULT_LG_PORT),
+	LG_PORT=ggpio.DEFAULT_LG_PORT,
 }
 
 func _init(gpiochip_id :int) -> void:
 	id = gpiochip_id
 
-func set_remote(addr :String, port :int = ggpio.DEFAULT_LG_PORT) -> void:
+func set_remote(addr :String, port :String = ggpio.DEFAULT_LG_PORT) -> void:
 	_env['LG_ADDR'] = addr
-	_env['LG_PORT'] = String.num_int64(port)
+	_env['LG_PORT'] = port
 
 func run(cmd :Array[String], shared:=true) -> Array:
 	'''

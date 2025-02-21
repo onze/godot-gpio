@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cdvr31q672hju"]
+[gd_scene load_steps=5 format=3 uid="uid://cdvr31q672hju"]
 
 [ext_resource type="Script" uid="uid://dlwiti4vu3a0h" path="res://samples/gpio_explorer/pin_control.gd" id="1_rdfwn"]
 [ext_resource type="Texture2D" uid="uid://bniutp4a5jfox" path="res://samples/gpio_explorer/icons/pin.svg" id="2_e7a2y"]
+[ext_resource type="PackedScene" uid="uid://dxdetaiokj2ld" path="res://samples/gpio_explorer/plot.tscn" id="2_wp7du"]
 [ext_resource type="Texture2D" uid="uid://duhhwdn2c4w8q" path="res://samples/gpio_explorer/icons/pin_wheel.svg" id="3_tw0u2"]
 
 [node name="PinControl" type="ColorRect"]
@@ -34,20 +35,34 @@ layout_mode = 2
 [node name="name-hbox" type="HBoxContainer" parent="hbox"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="name-label" type="Label" parent="hbox/name-hbox"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 text = "GPIO 2 (I2C1 SDA)"
+text_overrun_behavior = 3
 
 [node name="icons-hbox" type="HBoxContainer" parent="hbox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.35
 
 [node name="char-icons" type="Label" parent="hbox/icons-hbox"]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="plot-hbox" type="HBoxContainer" parent="hbox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="voltage-plot" parent="hbox/plot-hbox" instance=ExtResource("2_wp7du")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+background_color = Color(0.269451, 0.388287, 0.18973, 1)
 
 [node name="margin2" type="Control" parent="hbox"]
 custom_minimum_size = Vector2(3, 0)
@@ -55,7 +70,9 @@ layout_mode = 2
 
 [node name="number-label" type="Label" parent="hbox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
+horizontal_alignment = 2
 
 [node name="pin-container" type="AspectRatioContainer" parent="hbox"]
 clip_contents = true

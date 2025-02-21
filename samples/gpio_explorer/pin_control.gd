@@ -9,15 +9,20 @@ Styling:
 	- red: pullup
 	- blue: pulldown
 '''
+const Plot = preload('plot.gd')
+
+const VOLTAGE_PLOT_WINDOW_S := 10.
+
 @onready var hbox: HBoxContainer = %hbox
 @onready var name_hbox: HBoxContainer = %'name-hbox'
 @onready var name_label: Label = %'name-label'
+@onready var voltage_plot: Plot = %'voltage-plot'
+@onready var icons_hbox: HBoxContainer = %'icons-hbox'
+@onready var char_icons: Label = %'char-icons'
 @onready var number_label: Label = %'number-label'
 @onready var pin_container: MarginContainer = %'pin-container'
 @onready var pin_icon: TextureRect = %'pin-icon'
 @onready var pin_center: TextureRect = %'pin-center'
-@onready var icons_hbox: HBoxContainer = %'icons-hbox'
-@onready var char_icons: Label = %'char-icons'
 
 var gpio :ggpio.GPIO
 # null in _ready, then updated async
@@ -25,7 +30,13 @@ var gil :ggpio.GPIO.GILResult = null:
 	get: return gil
 	set(value):
 		gil = value
-		_refresh_from_gil()
+		if gil != null:
+			_refresh_from_gil()
+var voltage := Vector2.ZERO:
+	get: return voltage
+	set(value):
+		voltage = value
+		_refresh_from_voltage()
 
 const GPIO_COLOR := '#859900'
 const PULLUP_COLOR := Color.CRIMSON
@@ -49,6 +60,17 @@ func _ready() -> void:
 		gil.user = '<user>'
 		gil.purpose = '<purpose>'
 		#gil.line_flags = 0
+
+	# plot setup
+	voltage_plot.y_min = -1.
+	voltage_plot.y_max = 1.
+	var dt := Time.get_ticks_msec()
+	voltage_plot.x_min = dt-VOLTAGE_PLOT_WINDOW_S
+	voltage_plot.x_max = dt+1
+	voltage_plot.background_color = Color.TRANSPARENT
+	voltage_plot.curve_color_high = Color.GREEN_YELLOW
+	voltage_plot.curve_color_low = Color.DARK_GREEN
+	voltage_plot.width = 1.
 
 func _refresh_from_gil() -> void:
 	number_label.text = String.num_int64(gil.gpio_id)
@@ -94,4 +116,9 @@ func _refresh_from_gil() -> void:
 	if reversed_layout:
 		char_icons_texts.reverse()
 	char_icons.text = ' '.join(char_icons_texts)
-	icons_hbox.tooltip_text += '|'.join(icons_hbox_tooltip)
+	icons_hbox.tooltip_text = '|'.join(icons_hbox_tooltip)
+
+func _refresh_from_voltage() -> void:
+	voltage_plot.x_min = voltage.x-VOLTAGE_PLOT_WINDOW_S
+	voltage_plot.x_max = voltage.x+1
+	voltage_plot.add_point(Vector2(voltage.x, voltage.y))

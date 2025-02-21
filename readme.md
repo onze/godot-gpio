@@ -103,6 +103,7 @@ flowchart RL
 ## Logging
 `Godot-GPIO` logs under 4 levels:
 
+- `VERBOSE`: to debug the lib itself. Will flood your terminal.
 - `DEBUG`: Logs most events and gives a verbose overview of what's happening in the lib.
 - `INFO`: Default level.
 - `WARNING`: for local errors detected within this lib.

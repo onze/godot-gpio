@@ -1,7 +1,7 @@
 # Normalize EOL for all files that Git considers text files.
 * text=auto eol=lf
 
-# Only include the addons folder when downloading from the Asset Library.
+# Only include the addons/ggpio folder when downloading from the Asset Library.
 /**        export-ignore
 /addons    !export-ignore
-/addons/** !export-ignore
+/addons/ggpio/** !export-ignore

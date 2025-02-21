@@ -14,7 +14,7 @@ const Chip = preload('chip.gd')
 const GPIO = preload('gpio.gd')
 
 const DEFAULT_LG_ADDR :String = 'localhost'
-const DEFAULT_LG_PORT :int = 8889
+const DEFAULT_LG_PORT :String = '8889'
 const DEFAULT_SHARE_ID := 1
 
 enum LineFlag {
@@ -69,6 +69,7 @@ enum Level {
 
 #region logging
 enum LogLevel {
+	VERBOSE = -1,
 	DEBUG = 0,
 	INFO = 1,
 	WARNING = 2,
@@ -119,6 +120,7 @@ static func Run(
 	for k in env:
 		OS.set_environment(k, env[k])
 	var output :Array[String] = []
+	ggpio._log('[CMD] %s'%[' '.join(cmd)], ggpio.LogLevel.VERBOSE)
 	var rcode := OS.execute('rgs', cmd, output, true, false)
 	var err := OK if rcode == 0 else FAILED
 	if err != OK:
