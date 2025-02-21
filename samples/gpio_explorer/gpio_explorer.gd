@@ -15,14 +15,14 @@ extends Control
 var chip :ggpio.Chip
 
 var env :Dictionary[String, String] = {
-	LG_ADDR='goshrimp.local',
+	LG_ADDR='localhost',
 	LG_PORT=String.num_int64(ggpio.DEFAULT_LG_PORT),
 }
 
 func _ready() -> void:
 	get_window().title = 'GGPIO -- GPIO Explorer'
 	ggpio.log_level = ggpio.LogLevel.DEBUG
-	OS.set_environment('LG_ADDR', 'goshrimp.local')
+	OS.set_environment('LG_ADDR', env.get('LG_ADDR'))
 	ggpio.Init(true)
 
 	chip = ggpio.Chip.new(0)
