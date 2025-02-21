@@ -198,3 +198,12 @@ track which which parts of [rgs API](https://abyz.me.uk/lg/rgs.html) are support
 | LCFG    | ✖         |
 | PCD     | ✖         |
 | PWD     | ✖         |
+
+## FAQ
+
+### Why spam `rds` subprocesses instead of doing a proper rgpio / GDExtension integration?
+I know. I wish I had the time. I'm working on this as a side-quest for a hobby.
+If the lib picks up, we'll plug a strategy pattern in, and add a native rpgio implementation.
+Until then, this is a quick[1] and dirty way to get Godot to play with the Pi.
+
+[1] quick to implement, not quick to run.

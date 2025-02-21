@@ -25,10 +25,6 @@ driver/driver="Dummy"
 window/size/viewport_height=864
 window/size/initial_position_type=2
 
-[editor]
-
-run/main_run_args="--headless"
-
 [editor_plugins]
 
 enabled=PackedStringArray()

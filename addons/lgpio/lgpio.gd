@@ -13,6 +13,8 @@ const Utils = preload('utils.gd')
 const Chip = preload('chip.gd')
 const GPIO = preload('gpio.gd')
 
+static var DEFAULT_LG_ADDR :String = 'localhost'
+static var DEFAULT_LG_PORT :int = 8889
 
 enum LineFlag {
 	ACTIVE_LOW = 4,
@@ -87,28 +89,45 @@ static func _log(s:String, level :LogLevel) -> void:
 
 const DEFAULT_SHARE_ID := 1
 
-static func Init(with_reset = false) -> void:
+static func Init(with_reset = false, env :Dictionary[String, String] = {}) -> void:
 	'''
 	with_reset: will close the default GPIO,
 	so as to reset it to its default state.
 	'''
-	var lib_version :String = lgpio.Run(['lgv'], [])[1]
-	var target_sbc :String = lgpio.Run(['sbc'], [])[1]
-	print('Godot-LGPIO: using rgs %s on %s'%[lib_version, target_sbc])
+	CheckRGSBinary()
+	var lib_version :String = lgpio.Run(['-v'], env)[1]
+	print('Godot-LGPIO: using rgs %s'%[lib_version,])
 	if with_reset:
 		OS.execute('rgs', ['GC', DEFAULT_SHARE_ID], [], true, false)
 
-static func Run(cmd :Array[String], output :Array[String]) -> Array:
+static func CheckRGSBinary() -> void:
+	if OS.execute('rgs', [], [], true, false) != 0:
+		lgpio._log('PATH: %s'%OS.get_environment('PATH'), lgpio.LogLevel.DEBUG)
+		lgpio._log('rgs binary not found! Godot-lgpio will NOT work.', lgpio.LogLevel.ERROR)
+
+const ErrorCodes = {
+	255: 'RGS_CONNECT_ERR',
+	254: 'RGS_OPTION_ERR',
+	253: 'RGS_SCRIPT_ERR',
+}
+static func Run(
+	cmd :Array[String],
+	env :Dictionary[String, String] = {}
+) -> Array:
 	'''
 	Returns [Error, String].
 	'''
+	for k in env:
+		OS.set_environment(k, env[k])
+	var output :Array[String] = []
 	var rcode := OS.execute('rgs', cmd, output, true, false)
 	var err := OK if rcode == 0 else FAILED
 	if err != OK:
 		lgpio._log(
-			'Error running command "%s" (rcode %s): %s'%[
+			'Error running command "%s" (rcode %s/%s): %s'%[
 				cmd,
 				rcode,
+				lgpio.ErrorCodes.get(rcode, ''),
 				output.back() if output.size()>1 else '<empty stderr>'
 			],
 			lgpio.LogLevel.WARNING

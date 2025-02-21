@@ -7,9 +7,17 @@ var id :int = 0
 var id_string: String:
 	get: return String.num_int64(id)
 
+var _env :Dictionary[String, String] = {
+	LG_ADDR=lgpio.DEFAULT_LG_ADDR,
+	LG_PORT=String.num_int64(lgpio.DEFAULT_LG_PORT),
+}
 
 func _init(gpiochip_id :int) -> void:
 	id = gpiochip_id
+
+func set_remote(addr :String, port :int = lgpio.DEFAULT_LG_PORT) -> void:
+	_env['LG_ADDR'] = addr
+	_env['LG_PORT'] = String.num_int64(port)
 
 func run(cmd :Array[String], shared:=true) -> Array:
 	'''
@@ -20,13 +28,12 @@ func run(cmd :Array[String], shared:=true) -> Array:
 		full_cmd.append('c')
 		full_cmd.append(String.num_int64(share_id))
 	full_cmd.append_array(cmd)
-	var output :Array[String] = []
-	return lgpio.Run(full_cmd, output)
+	return lgpio.Run(full_cmd, _env)
 
-func _notification(what):
-	if what == NOTIFICATION_PREDELETE:
-		lgpio._log('Freeing Chip(%s)'%id, lgpio.LogLevel.DEBUG)
-		GC()
+#func _notification(what):
+	#if what == NOTIFICATION_PREDELETE:
+		#lgpio._log('Freeing Chip(%s)'%id, lgpio.LogLevel.DEBUG)
+		#GC()
 
 func gpio(
 	gpio :int,
