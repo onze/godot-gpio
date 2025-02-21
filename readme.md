@@ -1,27 +1,41 @@
 # Godot - LGPIO
-One liner description.
+GDScript client for [lgpio](https://abyz.me.uk/lg/index.html) - Makes it easier to interact with GPIO on your Raspberry Pi or other SBC.
+
+[!["Buy Me A Coffee"](https://buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/valbisson)
 
 # Setup
 1. install `rgpiod` on the computer you want to control (eg Raspberri Pi).
 2. run it: `sudo rgpiod`
 3. on your host (where the Godot-lgpio will be running, possibly the same host,
-depending on you situation) install `rgs` (debian/ubuntu: `sudo apt-get install rgpio-tools`)
+depending on you situation) [install](#requirements) `rgs`
 4. you're ready to use the app!
 
+# Requirements
+- on Raspberri Pi: `sudo apt-get install rgpio-tools`
+- others: download/compile `rgs` using [lgpio's install info](https://abyz.me.uk/lg/download.html)
+
 # Usage
-- by default, Godot-LGPIO connects to `localhost`, ie it access GPIOs of the board
+Check out scenes in the `samples` directory.
+
+Note:
+- by default, `Godot-lgpio` connects to `localhost`, ie it access GPIOs of the board
 it runs on.
 - set `LG_ENVADDR` & `LG_ENVPORT` to work remotely and access GPIOS of the board
 at those address & port.
 
-Check out scenes in the `samples` directory.
 
 # Facilities
 ## Devices
-LGPIO (aims to) implements a few abstractions similar to [gpiozero](https://gpiozero.readthedocs.io/en/latest/api_output.html#base-classes)
+LGPIO implements a few abstractions similar to [gpiozero](https://gpiozero.readthedocs.io/en/latest/api_output.html#base-classes)
 (this is very much a work-in-progress).
 
-Lighter classes are abstract, while darker ones are concrete / instanciable.
+Legend:
+- lighter classes are abstract
+- darker ones are concrete / instanciable
+- classes marked with a ✔ have been implemented
+- classes marked with a ✖ are not written yet (I may lack the hardware to test them,
+contributions are welcome!)
+
 
 ```mermaid
 flowchart RL
@@ -64,8 +78,9 @@ flowchart RL
 - `ERROR`: when the underlying stack (rgs/lgpio) returns errors.
 
 # WIP Status
-Not all of `lgpio` API is implemented. This is a work in progress where PRs are welcome. Here's a table
-to track what's suported and what's not:
+Not all of `lgpio` API is implemented. This is a work in progress where PRs are
+welcome. In addition to the high-level classes described above, here's a table to
+track which which parts of [rgs API](https://abyz.me.uk/lg/rgs.html) are supported:
 
 | Command | Supported |
 | :-------| :-------: |
