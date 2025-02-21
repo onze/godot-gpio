@@ -15,7 +15,7 @@ depending on you situation) [install](#requirements) `rgs`
 - others: download/compile `rgs` using [lgpio's install info](https://abyz.me.uk/lg/download.html)
 
 # Usage
-Check out scenes in the `samples` directory.
+Check out scenes in the `samples` directory. Each scene can be played independently (`F6`).
 
 Note:
 - by default, `Godot-lgpio` connects to `localhost`, ie it access GPIOs of the board
