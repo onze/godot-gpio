@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://wp25d2n14qjb"]
 
-[ext_resource type="Script" path="res://samples/light_switch/light_switch.gd" id="1_gcteh"]
+[ext_resource type="Script" uid="uid://dvndh66whdr0p" path="res://samples/light_switch/light_switch.gd" id="1_gcteh"]
 
 [node name="LightSwitch" type="Control"]
 layout_mode = 3

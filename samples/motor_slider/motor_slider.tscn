@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cfvhrbbxy7sul"]
 
-[ext_resource type="Script" path="res://samples/motor_slider/motor_slider.gd" id="1_mai80"]
+[ext_resource type="Script" uid="uid://cktjindkmh6js" path="res://samples/motor_slider/motor_slider.gd" id="1_mai80"]
 
 [node name="MotorSlider" type="VBoxContainer"]
 anchors_preset = 15
@@ -33,20 +33,20 @@ text = "Enable"
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="spacer" type="Control" parent="container/menu"]
-layout_mode = 2
-size_flags_horizontal = 3
-
 [node name="play-btn" type="Button" parent="container/menu"]
 unique_name_in_owner = true
 layout_mode = 2
 toggle_mode = true
-text = " ▶"
+text = " Connect"
+
+[node name="spacer" type="Control" parent="container/menu"]
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="stop-btn" type="Button" parent="container/menu"]
 unique_name_in_owner = true
 layout_mode = 2
-text = " ⏹ "
+text = "Reset"
 
 [node name="slider" type="HBoxContainer" parent="container"]
 layout_mode = 2
