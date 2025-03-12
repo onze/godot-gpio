@@ -265,6 +265,13 @@ Until then, this is a quick[1] and dirty way to get Godot to play with the Pi.
 
 
 ## Changelog
+### 0.5
+- upgrade to Godot 4.4
+- samples now read .env file for setup
+
+
+<details>
+<summary>Previous entries</summary>
 
 ### 0.4
 - implemented DigitalOutputDevice, and PHaseEnableMotor (with `enable` being a DigitalOutputDevice
@@ -272,9 +279,6 @@ until PWMOutputDevice gets done)
 - added sample scenes to test / play with a single GPIO
 ([light_switch](https://github.com/onze/godot-gpio/tree/trunk/samples/light_switch)) and
 [a PE motor](https://github.com/onze/godot-gpio/tree/trunk/samples/motor_slider)
-
-<details>
-<summary>Previous entries</summary>
 
 ### 0.3
 - moved all `lg` commands into the `ggpio.lg` namespace
