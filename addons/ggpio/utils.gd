@@ -6,8 +6,8 @@ static func GetKeyForValue(v :String, d :Dictionary) -> Variant:
 			return k
 	return ''
 
-static func ParseDotEnv():
-	var file := FileAccess.open('.env', FileAccess.READ)
+static func ParseDotEnv(dotenv_path :String='.env'):
+	var file := FileAccess.open(dotenv_path, FileAccess.READ)
 	if file == null:
 		return
 	for line:String in file.get_as_text().split('\n'):

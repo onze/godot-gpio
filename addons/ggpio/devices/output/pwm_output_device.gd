@@ -28,7 +28,7 @@ var value :float:
 			write(value)
 var freq_hz :float = 100.
 # a duty_cycle < dead_zone counts as 0
-var dead_zone :float = .2
+var dead_zone :float = .1
 
 func _init(gpio :ggpio.GPIO, freq_hz :float = 100.) -> void:
 	self.gpio = gpio
@@ -41,7 +41,6 @@ func read() -> ggpio.Level:
 	return gpio.read()
 
 func write(duty_cycle :float) -> void:
-	dead_zone = 0.2
 	duty_cycle = clampf(duty_cycle, 0., 1.)
 	if duty_cycle < dead_zone:
 		stop()
