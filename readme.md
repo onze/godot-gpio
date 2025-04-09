@@ -267,7 +267,7 @@ Until then, this is a quick[1] and dirty way to get Godot to play with the Pi.
 ## Changelog
 ### 0.5.1
 - upgraded types to use fully typed Dictionary
-
+- motor slider sample: fixed motor updates frequency by debouncing updates
 
 <details>
 <summary>Previous entries</summary>

@@ -36,7 +36,6 @@ layout_mode = 2
 [node name="play-btn" type="Button" parent="container/menu"]
 unique_name_in_owner = true
 layout_mode = 2
-toggle_mode = true
 text = " Connect"
 
 [node name="spacer" type="Control" parent="container/menu"]
