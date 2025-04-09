@@ -1,5 +1,5 @@
 
-static func GetKeyForValue(v :String, d :Dictionary) -> Variant:
+static func GetKeyForValue(v :String, d :Dictionary[String, Variant]) -> Variant:
 	for k :String in d:
 		var dv :String = d.get(k)
 		if v == dv:

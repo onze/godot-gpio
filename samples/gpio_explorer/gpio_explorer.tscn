@@ -34,6 +34,7 @@ layout_mode = 2
 selected = 0
 item_count = 1
 popup/item_0/text = "gpiochip0"
+popup/item_0/id = 0
 
 [node name="refresh-gpio-btn" type="Button" parent="VBoxContainer/top-menu"]
 unique_name_in_owner = true
@@ -79,6 +80,7 @@ layout_mode = 2
 selected = 0
 item_count = 3
 popup/item_0/text = "0 Hz"
+popup/item_0/id = 0
 popup/item_1/text = "1 Hz"
 popup/item_1/id = 1
 popup/item_2/text = "2Hz"

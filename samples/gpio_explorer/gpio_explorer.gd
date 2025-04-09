@@ -19,8 +19,7 @@ var _chip_info :ggpio.Chip.ChipInfo
 var _sync_timer := Timer.new()
 
 func _ready() -> void:
-	#var env :Dictionary[String, String] = {
-	var env :Dictionary = {
+	var env :Dictionary[String, String] = {
 		LG_ADDR=ggpio.DEFAULT_LG_ADDR,
 		LG_PORT=ggpio.DEFAULT_LG_PORT,
 	}
@@ -93,8 +92,7 @@ func _on_gpio_picker_item_selected(index :int)-> void:
 
 func _sync_gpios() -> void:
 	# get line info in a single batched command
-	#var pins :Dictionary[int, PinControl] = {}
-	var pins :Dictionary = {}
+	var pins :Dictionary[int, PinControl] = {}
 	var GIL_query := ggpio.lg.LGCommand.new().share(_sbc.share_id)
 	for line_id :int in pinout_grid.get_child_count():
 		var pin_control :PinControl = pinout_grid.get_child(line_id)
@@ -143,7 +141,7 @@ func _update_sync_freq(item_index :int):
 func _usage() -> void:
 	print('USAGE: --host=HOST --port=PORT')
 
-func _parse_command_line(env :Dictionary) -> void:
+func _parse_command_line(env :Dictionary[String, String]) -> void:
 	var args := OS.get_cmdline_user_args()
 	if '--help' in args:
 		return _usage()

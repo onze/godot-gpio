@@ -265,13 +265,15 @@ Until then, this is a quick[1] and dirty way to get Godot to play with the Pi.
 
 
 ## Changelog
-### 0.5
-- upgrade to Godot 4.4
-- samples now read .env file for setup
+### 0.5.1
+- upgraded types to use fully typed Dictionary
 
 
 <details>
 <summary>Previous entries</summary>
+### 0.5
+- upgrade to Godot 4.4
+- samples now read .env file for setup
 
 ### 0.4
 - implemented DigitalOutputDevice, and PHaseEnableMotor (with `enable` being a DigitalOutputDevice
