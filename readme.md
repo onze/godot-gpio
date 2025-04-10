@@ -32,7 +32,7 @@ Here's a quick rundown of the main classes:
 namespace for the project, so that no other gd script needs to be imported in most cases.
 - `ggpio.SBC`: (Single Board Computer). That's the host we'll be interacting with.
 - `ggpio.Chip`: refers to a gpiochip under [the kernel's GPIO driver interface](https://docs.kernel.org/driver-api/gpio/driver.html).
-Most of the time we're workin with gpio `0`.
+Most of the time we're working with gpio `0`.
 - `ggpio.GPIO`: this is a single pin on a board.
 <details><summary>Here's how GPIOs on a Pi are numbered (<a href="https://pinout.xyz/">source</a>):</summary>
 <p align="center">
@@ -259,9 +259,7 @@ to track which which parts of [rgs API](https://abyz.me.uk/lg/rgs.html) are supp
 ### Why spam `rds` subprocesses instead of doing a proper rgpio / GDExtension integration?
 I know. I wish I had the time. I'm working on this as a side-quest for a hobby.
 If the lib picks up, we'll plug a strategy pattern in, and add a native rpgio implementation.
-Until then, this is a quick[1] and dirty way to get Godot to play with the Pi.
-
-[1] quick to implement, not quick to run.
+Until then, this is a quick (to write) way to get Godot to play with the Pi.
 
 
 ## Changelog
