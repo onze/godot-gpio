@@ -46,7 +46,10 @@ func _ready() -> void:
 		func()->void:
 			get_window().size = Vector2(container.size.x, 4*container.size.y)
 	)
-	_on_stop_pressed()
+	var phase_gpio :int = (OS.get_environment('GPIO_PHASE') as String).to_int()
+	phase_selector.select(phase_gpio)
+	var enable_gpio :int = (OS.get_environment('GPIO_ENABLE') as String).to_int()
+	enable_selector.select(enable_gpio)
 
 func _disable_item(btn:OptionButton, disabled_index :int) -> void:
 	for index :int in btn.item_count:
@@ -79,7 +82,8 @@ func _on_play_pressed() -> void:
 
 func _on_stop_pressed()->void:
 	value_slider.value = 0
-	pem = null
+	if pem != null:
+		pem.stop()
 
 func _update_pem(value :float) -> void:
 	if pem == null:
