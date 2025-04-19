@@ -15,24 +15,36 @@ static func Make(chip :ggpio.Chip, phase :int, enable :int) -> PhaseEnableMotor:
 	)
 
 var is_active :bool:
-	get: return is_zero_approx(value)
-var value :float = 0:
-	get: return (
+	get: return not is_zero_approx(value)
+func _get_value() -> float:
+	return (
 		enable.value
-		if phase.value == 0. # forward
+		if is_zero_approx(phase.value) # forward
 		else -enable.value
 	)
-	set(v):
+func _set_value(v :float) -> float:
 		v = clampf(v, -1., 1.)
 		if v > 0.:
-			forward(v)
+			phase.off()
+			enable.value = clampf(v, 0., 1.)
 		elif v < 0.:
-			backward(-v)
+			phase.on()
+			enable.value = clampf(-v, 0., 1.)
 		else:
-			stop()
+			phase.off()
+			enable.value = 0
+		return v
+var value :float = 0:
+	get: return _get_value()
+	set(v): return _set_value(v)
 
 var phase :ggpio.devices.output.DigitalOutputDevice
 var enable :ggpio.devices.output.PWMOutputDevice
+
+var reversed := false:
+	get(): return reversed
+	set(v):
+		phase.high_value = -1 if v else 1
 
 func _init(
 	phase :ggpio.devices.output.DigitalOutputDevice,
@@ -42,17 +54,13 @@ func _init(
 	self.enable = enable
 
 func forward(speed :float = 1.) -> void:
-	speed = clampf(speed, 0., 1.)
-	phase.off()
-	enable.value = speed
+	value = speed
 
 func backward(speed :float = 1.) -> void:
-	speed = clampf(speed, 0., 1.)
-	phase.on()
-	enable.value = speed
+	value = -speed
 
 func stop() -> void:
-	enable.off()
+	value = 0
 
 func close() -> void:
 	phase.close()

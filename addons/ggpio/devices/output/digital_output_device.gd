@@ -23,17 +23,17 @@ var value :float:
 	set(value_):
 		value = clampf(value_, 0., 1.)
 		if is_zero_approx(value):
-			off()
+			self.gpio.write(1-high_value)
 		else:
-			on()
+			self.gpio.write(high_value)
 
 var is_on :bool:
 	get: return value > .0
 	set(flag):
 		if flag:
-			on()
+			value = 1
 		else:
-			off()
+			value = 0
 var is_off :bool:
 	get: return not is_on
 	set(flag):
@@ -45,12 +45,13 @@ func _init(gpio :ggpio.GPIO, active_high := true) -> void:
 		high_value = 0
 
 func on() -> void:
-	self.gpio.write(high_value)
+	value = 1
 
 func off() -> void:
-	self.gpio.write(1-high_value)
+	value = 0
 
 func close() -> void:
+	value = 0
 	gpio.close()
 
 func read() -> ggpio.Level:

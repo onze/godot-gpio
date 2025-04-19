@@ -70,6 +70,9 @@ class LGCommand:
 		'''
 		Returns [Error, String].
 		'''
+		if sbc.mock:
+			return [OK, '']
+
 		if sbc != null:
 			OS.set_environment('LG_ADDR', sbc.host)
 			OS.set_environment('LG_PORT', sbc.port)

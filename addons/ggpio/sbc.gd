@@ -4,9 +4,18 @@ SBC == Single Board Compter
 This class wraps connection information
 '''
 
+const SBC = preload('sbc.gd')
+
 var host :String
 var port :String
 var share_id :int = ggpio.DEFAULT_SHARE_ID
+
+static func Mock() -> SBC:
+	var sbc := SBC.new()
+	sbc.mock = true
+	return sbc
+
+var mock := false
 
 func _init(
 	host :String = '',

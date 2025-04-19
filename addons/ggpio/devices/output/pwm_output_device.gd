@@ -20,12 +20,13 @@ static func Make(chip :ggpio.Chip, gpio_id :int) -> PWMOutputDevice:
 var gpio :ggpio.GPIO
 var value :float:
 	get: return value
-	set(value_):
-		value = clampf(value_, 0., 1.)
-		if is_zero_approx(freq_hz) or is_zero_approx(value):
-			stop()
+	set(duty_cycle):
+		value = clampf(duty_cycle, 0., 1.)
+		if is_zero_approx(freq_hz) or is_zero_approx(value) or value < dead_zone:
+			# stop
+			self.gpio.pwm(1, 0, 0, 0)
 		else:
-			write(value)
+			gpio.pwm(freq_hz, value*100.)
 var freq_hz :float = 100.
 # a duty_cycle < dead_zone counts as 0
 var dead_zone :float = .1
@@ -41,14 +42,10 @@ func read() -> ggpio.Level:
 	return gpio.read()
 
 func write(duty_cycle :float) -> void:
-	duty_cycle = clampf(duty_cycle, 0., 1.)
-	if duty_cycle < dead_zone:
-		stop()
-	else:
-		gpio.pwm(freq_hz, duty_cycle*100.)
+	value = duty_cycle
 
 func stop() -> void:
-	self.gpio.pwm(1, 0, 0, 0)
+	value = 0
 
 func off() -> void:
-	stop()
+	value = 0
