@@ -46,10 +46,18 @@ func _ready() -> void:
 		func()->void:
 			get_window().size = Vector2(container.size.x, 4*container.size.y)
 	)
+
+	# load GPIO from env
 	var phase_gpio :int = (OS.get_environment('GPIO_PHASE') as String).to_int()
-	phase_selector.select(phase_gpio)
 	var enable_gpio :int = (OS.get_environment('GPIO_ENABLE') as String).to_int()
-	enable_selector.select(enable_gpio)
+	if phase_gpio != 0:
+		phase_selector.select(phase_gpio)
+		_on_phase_selected(phase_gpio)
+	if enable_gpio != 0:
+		enable_selector.select(enable_gpio)
+		_on_enable_selected(enable_gpio)
+	if phase_gpio != 0 and enable_gpio != 0:
+		_on_play_pressed()
 
 func _disable_item(btn:OptionButton, disabled_index :int) -> void:
 	for index :int in btn.item_count:
@@ -98,6 +106,8 @@ func _process(_delta: float) -> void:
 	if is_equal_approx(pem.value, value_slider.value):
 		return
 	if Time.get_unix_time_from_system() - _last_value_change < PEM_UPDATE_DEBOUNCE_MS/1000.:
+		return
+	if is_equal_approx(pem.value, value_slider.value):
 		return
 	pem.value = value_slider.value
 	value_label.text = String.num(value_slider.value)
