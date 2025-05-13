@@ -263,6 +263,12 @@ Until then, this is a quick (to write) way to get Godot to play with the Pi.
 
 
 ## Changelog
+### 0.5.2
+- fixed files missing in downloaded asset
+
+<details>
+<summary>Previous entries</summary>
+
 ### 0.5.1
 - upgraded types to use fully typed Dictionary
 - motor slider sample:
@@ -270,8 +276,6 @@ Until then, this is a quick (to write) way to get Godot to play with the Pi.
 	- made the reset btn a stop btn
 	- phase and enable GPIO numbers can now be set from `GPIO_PHASE` & `GPIO_ENABLE` env vars
 
-<details>
-<summary>Previous entries</summary>
 ### 0.5
 - upgrade to Godot 4.4
 - samples now read .env file for setup

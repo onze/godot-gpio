@@ -2,6 +2,7 @@
 * text=auto eol=lf
 
 # Only include the addons/ggpio folder when downloading from the Asset Library.
-/**        export-ignore
-/addons    !export-ignore
-/addons/ggpio/** !export-ignore
+** export-ignore
+addons !export-ignore
+addons/ggpio !export-ignore
+addons/ggpio/** !export-ignore
